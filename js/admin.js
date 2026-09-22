@@ -28,7 +28,7 @@ function nextId(list) {
 
 function renderList() {
   const list = getQuestions();
-  $("count-badge").textContent = `${list.length} cau hoi`;
+  $("count-badge").textContent = `${list.length} câu hỏi`;
   const box = $("q-list");
   box.innerHTML = "";
   for (const q of list) {
@@ -40,8 +40,8 @@ function renderList() {
         <div class="q-item-text" title="${escapeAttr(q.question)}">${escapeHtml(q.question)}</div>
       </div>
       <div class="q-item-actions">
-        <button type="button" data-edit="${q.id}">Sua</button>
-        <button type="button" class="btn-del" data-del="${q.id}">Xoa</button>
+        <button type="button" data-edit="${q.id}">Sửa</button>
+        <button type="button" class="btn-del" data-del="${q.id}">Xóa</button>
       </div>`;
     box.appendChild(row);
   }
@@ -71,9 +71,9 @@ function fillForm(q) {
   $("q-explanation").value = q ? q.explanation || "" : "";
   $("form-title");
   document.querySelector(".form-title").textContent = q
-    ? `Sua cau #${q.id}`
-    : "Cau hoi moi";
-  $("btn-save").textContent = q ? "Cap nhat" : "Luu cau hoi";
+    ? `Sửa câu #${q.id}`
+    : "Câu hỏi mới";
+  $("btn-save").textContent = q ? "Cập nhật" : "Lưu câu hỏi";
   $("btn-reset").hidden = !q;
 }
 
@@ -106,19 +106,19 @@ function onSubmit(e) {
   };
 
   if (!payload.section || !question || Object.values(options).some((v) => !v)) {
-    showMsg("Nhap day du truong bat buoc", true);
+    showMsg("Nhập đầy đủ trường bắt buộc", true);
     return;
   }
 
   if (idVal) {
     const i = list.findIndex((q) => q.id === Number(idVal));
-    if (i === -1) { showMsg("Khong tim thay cau", true); return; }
+    if (i === -1) { showMsg("Không tìm thấy câu", true); return; }
     list[i] = { ...list[i], ...payload };
-    showMsg(`Da cap nhat cau #${idVal}`);
+    showMsg(`Đã cập nhật câu #${idVal}`);
   } else {
     payload.id = nextId(list);
     list.push(payload);
-    showMsg(`Da them cau #${payload.id}`);
+    showMsg(`Đã thêm câu #${payload.id}`);
   }
 
   save(list);
@@ -141,10 +141,10 @@ function onClickList(e) {
   }
 
   if (delId) {
-    if (!confirm(`Xoa cau #${delId}?`)) return;
+    if (!confirm(`Xóa câu #${delId}?`)) return;
     save(list.filter((x) => x.id !== Number(delId)));
     renderList();
-    showMsg(`Da xoa cau #${delId}`);
+    showMsg(`Đã xóa câu #${delId}`);
   }
 }
 
@@ -169,9 +169,9 @@ function importJson(file) {
       save(data);
       renderList();
       fillForm(null);
-      showMsg(`Da nhap ${data.length} cau hoi`);
+      showMsg(`Đã nhập ${data.length} câu hỏi`);
     } catch {
-      showMsg("File JSON khong hop le", true);
+      showMsg("File JSON không hợp lệ", true);
     }
   };
   reader.readAsText(file);
@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderList();
     fillForm(null);
   } catch (err) {
-    showMsg(`Loi tai du lieu: ${err.message}`, true);
+    showMsg(`Lỗi tải dữ liệu: ${err.message}`, true);
   }
 
   $("q-form").addEventListener("submit", onSubmit);

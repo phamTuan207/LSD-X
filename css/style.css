@@ -24,6 +24,8 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; background: var(--bg); }
 
 body {
@@ -501,6 +503,48 @@ body::before {
   cursor: pointer;
 }
 
+.team-setup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.7rem;
+  margin: -0.35rem auto 1.5rem;
+  max-width: 620px;
+  text-align: left;
+}
+
+.team-name-field { display: grid; gap: 0.35rem; }
+.team-name-field span { color: var(--text-dim); font-size: 0.76rem; font-weight: 700; }
+.team-name-field input {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid rgba(245, 217, 122, 0.2);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--text);
+  font: inherit;
+}
+.team-name-field input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+.team-scoreboard {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: -0.35rem 0 1.25rem;
+}
+.team-board-label { color: var(--text-dim); font-size: 0.8rem; font-weight: 700; }
+.team-chip {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgba(245, 217, 122, 0.25);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.team-chip.is-active { border-color: var(--gold); background: rgba(245, 217, 122, 0.16); color: var(--gold-soft); }
+
 .btn-start {
   display: block;
   width: fit-content;
@@ -776,6 +820,17 @@ body::before {
   margin-bottom: 1.5rem;
 }
 
+.result-teams {
+  margin: 0 auto 1.5rem;
+  padding: 0.9rem 1rem;
+  max-width: 30rem;
+  border-top: 1px solid var(--gold-dim);
+  border-bottom: 1px solid var(--gold-dim);
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.result-teams-title { color: var(--gold-soft); font-weight: 800; margin-bottom: 0.25rem; }
+
 /* —— admin —— */
 .admin { display: grid; gap: 1.5rem; }
 
@@ -845,6 +900,7 @@ body::before {
 @media (max-width: 560px) {
   .field-grid,
   .field-grid--small { grid-template-columns: 1fr; }
+  .team-setup { grid-template-columns: 1fr; }
 }
 
 .form-actions {
