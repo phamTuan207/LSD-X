@@ -3,6 +3,8 @@ const state = {
   questions: [],
   index: 0,
   locked: false,
+  score: 0,
+  wrongIds: [],
 };
 
 async function loadQuestions() {
@@ -39,6 +41,7 @@ function renderQuestion() {
   }
 
   document.getElementById("loading").hidden = true;
+  document.getElementById("result").hidden = true;
   document.getElementById("quiz").hidden = false;
 }
 
@@ -48,6 +51,8 @@ function onPick(key, btn) {
 
   const q = state.questions[state.index];
   const correct = key === q.answer;
+  if (correct) state.score += 1;
+  else state.wrongIds.push(q.id);
 
   for (const el of document.querySelectorAll(".option")) {
     el.disabled = true;
@@ -56,37 +61,67 @@ function onPick(key, btn) {
   }
 
   const verdict = document.getElementById("feedback-verdict");
-  verdict.textContent = correct ? "Chính xác! 🎯" : `Sai rồi — đáp án đúng là ${q.answer}`;
+  verdict.textContent = correct
+    ? "Chính xác!"
+    : `Sai roi — dap an dung la ${q.answer}`;
   verdict.className = `feedback-verdict ${correct ? "ok" : "bad"}`;
 
   document.getElementById("feedback-explain").textContent = q.explanation || "";
   document.getElementById("feedback-source").textContent = q.source
-    ? `Văn kiện: ${q.source}`
+    ? `Van kien: ${q.source}`
     : "";
   document.getElementById("feedback").hidden = false;
 
   const nextBtn = document.getElementById("btn-next");
   const isLast = state.index >= state.questions.length - 1;
-  nextBtn.textContent = isLast ? "Xem kết quả →" : "Câu tiếp theo →";
+  nextBtn.textContent = isLast ? "Xem ket qua →" : "Cau tiep theo →";
+}
+
+function showResult() {
+  const total = state.questions.length;
+  const pct = Math.round((state.score / total) * 100);
+
+  document.getElementById("quiz").hidden = true;
+  document.getElementById("result").hidden = false;
+  document.getElementById("result-score").textContent =
+    `${state.score}/${total}`;
+
+  let msg = "Cung co co day, tap them nua!";
+  if (pct >= 90) msg = "Xuat sac! Dang cap nha lich su!";
+  else if (pct >= 75) msg = "Gioi lam! Nang luc manh day.";
+  else if (pct >= 50) msg = "Duoc, nhung chua day du.";
+  document.getElementById("result-msg").textContent = msg;
+
+  const detail = state.wrongIds.length
+    ? `Sai ca: ${state.wrongIds.join(", ")}`
+    : "Khong sai ca nao.uy tuyet!";
+  document.getElementById("result-detail").textContent = detail;
 }
 
 function nextQuestion() {
   if (state.index >= state.questions.length - 1) {
-    // Feature điểm số sẽ làm sau
-    alert("Hết câu hỏi! Tính năng điểm số sắp ra.");
+    showResult();
     return;
   }
   state.index += 1;
   renderQuestion();
 }
 
+function retry() {
+  state.index = 0;
+  state.score = 0;
+  state.wrongIds = [];
+  renderQuestion();
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("btn-next").addEventListener("click", nextQuestion);
+  document.getElementById("btn-retry").addEventListener("click", retry);
   try {
     state.questions = await loadQuestions();
     renderQuestion();
   } catch (err) {
     document.getElementById("loading").textContent =
-      `Không tải được câu hỏi: ${err.message}`;
+      `Khong tai duoc cau hoi: ${err.message}`;
   }
 });

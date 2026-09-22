@@ -233,6 +233,43 @@ body {
   transform: translateY(-1px);
 }
 
+.result-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(241, 196, 15, 0.35);
+  border-radius: 16px;
+  padding: 2.5rem 1.75rem;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.result-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.result-score {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.result-msg {
+  font-size: 1.15rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.result-detail {
+  color: var(--text-dim);
+  margin-bottom: 1.5rem;
+}
+
 .credits {
   margin-top: 0.4rem;
   font-size: 0.75rem;
