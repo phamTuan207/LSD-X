@@ -330,6 +330,43 @@ body::before {
   z-index: 50;
 }
 
+/* —— liquid glass hybrid: CSS skin on cards (WebGL only on CTAs) —— */
+.question-card,
+.start-card,
+.result-card,
+.picker-card {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 40%, rgba(245, 217, 122, 0.03)),
+    rgba(36, 22, 22, 0.72);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    var(--shadow-card),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.option {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.28);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.glass-cta {
+  z-index: 5;
+}
+
+.glass-cta--secondary {
+  margin-top: 0.75rem;
+}
+
+.site-header .badge {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
 /* —— start screen —— */
 .start-card {
   background:
