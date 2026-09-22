@@ -45,7 +45,7 @@ Mở trình duyệt vào **http://localhost:8000**
 - Mỗi câu: giáo viên đọc câu hỏi, **rút tên** học sinh (nút *Gọi tên ngẫu nhiên*), bạn đó trả lời miệng.
 - Người bấm máy chọn đáp án trên màn → hiện đúng/sai + lý giải + văn kiện. Giáo viên có thời gian giải thích, rồi bấm **Câu tiếp theo** để tiếp tục.
 - Nếu bấm nhầm đáp án hoặc chọn nhầm đội, bấm **Hoàn tác, chọn lại** trong phần lý giải rồi thực hiện lại câu đó.
-- Phím tắt: **A–D** chọn đáp án.
+- Phím tắt: **A-D** chọn đáp án.
 - Khi chơi theo đội, giáo viên bấm vào đội giơ tay nhanh nhất trước khi người chơi trả lời; lựa chọn sẽ khóa sau khi nộp đáp án. Câu đúng cộng điểm và theo dõi chuỗi đúng.
 - Cuối trận: điểm tổng, bảng điểm đội, danh sách câu sai, nút chơi lại.
 
@@ -106,7 +106,7 @@ LSD-X/
 ```json
 {
   "id": 1,
-  "section": "TRUOC DAI HOI X",
+  "section": "Trong Đại hội X",
   "question": "Nội dung câu hỏi?",
   "options": { "A": "...", "B": "...", "C": "...", "D": "..." },
   "answer": "C",

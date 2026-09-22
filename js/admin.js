@@ -31,6 +31,13 @@ function renderList() {
   $("count-badge").textContent = `${list.length} câu hỏi`;
   const box = $("q-list");
   box.innerHTML = "";
+  if (!list.length) {
+    const empty = document.createElement("p");
+    empty.className = "q-empty";
+    empty.textContent = "Chưa có câu hỏi nào. Thêm câu đầu tiên bằng biểu mẫu phía trên.";
+    box.appendChild(empty);
+    return;
+  }
   for (const q of list) {
     const row = document.createElement("div");
     row.className = "q-item";
@@ -69,10 +76,7 @@ function fillForm(q) {
   $("q-answer").value = q ? q.answer : "A";
   $("q-source").value = q ? q.source || "" : "";
   $("q-explanation").value = q ? q.explanation || "" : "";
-  $("form-title");
-  document.querySelector(".form-title").textContent = q
-    ? `Sửa câu #${q.id}`
-    : "Câu hỏi mới";
+  $("form-title").textContent = q ? `Sửa câu #${q.id}` : "Câu hỏi mới";
   $("btn-save").textContent = q ? "Cập nhật" : "Lưu câu hỏi";
   $("btn-reset").hidden = !q;
 }

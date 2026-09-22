@@ -20,10 +20,9 @@
       <span class="flag-star">★</span>
     </div>
     <div class="header-inner">
-      <p class="header-kicker">Nhóm 4 · Đại hội đại biểu toàn quốc</p>
       <h1>Lần Thứ <em>X</em></h1>
       <div class="header-rule" aria-hidden="true"><span>★</span></div>
-      <p class="subtitle">Bộ câu hỏi trắc nghiệm · Trò chơi học tập</p>
+      <p class="subtitle">Bộ câu hỏi trắc nghiệm Đại hội đại biểu toàn quốc · Nhóm 4</p>
       <a class="header-link" href="admin.html">Quản lý câu hỏi →</a>
     </div>
   </header>
@@ -31,7 +30,6 @@
   <main id="app" class="container">
     <section id="start" class="start">
       <div class="start-card">
-        <p class="start-kicker">Trò chơi học tập</p>
         <h2 class="start-title">Sẵn sàng bước vào <em>Đại hội X</em>?</h2>
         <p class="start-desc">
           30 câu trắc nghiệm về Đại hội đại biểu toàn quốc lần thứ X của Đảng.
@@ -81,37 +79,38 @@
         <h2 id="question-text" class="question-text"></h2>
         <div id="options" class="options"></div>
         <p class="kbd-hint" aria-hidden="true">
-          Phím tắt: <kbd>A</kbd>–<kbd>D</kbd> chọn · giáo viên bấm tiếp
+          Phím tắt: <kbd>A</kbd>-<kbd>D</kbd> chọn · <kbd>Enter</kbd> tiếp
         </p>
-        <div id="feedback" class="feedback" hidden>
+        <div id="feedback" class="feedback" aria-live="polite" hidden>
           <p id="feedback-verdict" class="feedback-verdict"></p>
           <p id="feedback-explain" class="feedback-explain"></p>
           <p id="feedback-source" class="feedback-source"></p>
-          <button id="btn-next" type="button" class="btn-next">Câu tiếp theo →</button>
-          <button id="btn-undo" type="button" class="btn-ghost btn-undo">Hoàn tác, chọn lại</button>
+          <div class="feedback-actions">
+            <button id="btn-next" type="button" class="btn-next">Câu tiếp theo →</button>
+            <button id="btn-undo" type="button" class="btn-ghost btn-undo">Hoàn tác, chọn lại</button>
+          </div>
         </div>
       </article>
     </section>
 
     <section id="result" class="result" hidden>
       <div class="result-card">
-        <p class="result-label">Kết quả</p>
-        <p id="result-score" class="result-score"></p>
+        <p id="result-score" class="result-score" aria-live="polite"></p>
         <p id="result-msg" class="result-msg"></p>
         <p id="result-detail" class="result-detail"></p>
         <div id="result-teams" class="result-teams" hidden></div>
-        <button id="btn-retry" type="button" class="btn-next">Chơi lại ↺</button>
+        <button id="btn-retry" type="button" class="btn-next">Chơi lại vòng mới</button>
       </div>
     </section>
 
     <section id="picker" class="picker" hidden>
       <div class="picker-card">
-        <p class="start-kicker">Gọi tên</p>
-        <p class="picker-label">Danh sách lớp (mỗi tên 1 dòng)</p>
+        <h2 class="card-title">Gọi tên ngẫu nhiên</h2>
+        <label class="picker-label" for="picker-names">Danh sách lớp, mỗi tên một dòng</label>
         <textarea id="picker-names" class="picker-input" rows="5"
-          placeholder="Nguyen Van A&#10;Tran Thi B&#10;..."></textarea>
+          placeholder="Nguyễn Văn A&#10;Trần Thị B&#10;..."></textarea>
         <button id="btn-pick" type="button" class="btn-next">Rút tên →</button>
-        <p id="picker-result" class="picker-result" hidden></p>
+        <p id="picker-result" class="picker-result" aria-live="polite" hidden></p>
         <p id="picker-hint" class="picker-hint">
           Tên đã gọi sẽ không lặp lại đến khi hết danh sách.
         </p>

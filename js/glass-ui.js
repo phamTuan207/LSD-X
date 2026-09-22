@@ -3,10 +3,12 @@
 
 function initGlassUI() {
   if (typeof Button === "undefined") return;
+  // small screens keep the solid gold CTA: legible at every glass tint, cheaper
+  if (window.matchMedia("(max-width: 640px)").matches) return;
 
   const pairs = [
-    { id: "btn-start", text: "Bắt đầu →", size: 20, tint: 0.28 },
-    { id: "btn-toggle-picker", text: "Gọi tên ngẫu nhiên", size: 16, tint: 0.14, secondary: true },
+    { id: "btn-start", text: "Bắt đầu →", size: 20, tint: 0.5 },
+    { id: "btn-toggle-picker", text: "Gọi tên ngẫu nhiên", size: 16, tint: 0.4, secondary: true },
   ];
 
   for (const p of pairs) {

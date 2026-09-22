@@ -18,9 +18,8 @@
       <span class="flag-star">★</span>
     </div>
     <div class="header-inner">
-      <p class="header-kicker">Nhóm 4 · Kho câu hỏi Đại hội</p>
       <h1>Thư viện <em>câu hỏi</em></h1>
-      <p class="subtitle">Lưu trên trình duyệt · xuất file JSON khi xong</p>
+      <p class="subtitle">Lưu trên trình duyệt · Xuất file JSON khi hoàn tất</p>
     </div>
   </header>
 
@@ -31,12 +30,12 @@
     </nav>
 
     <form id="q-form" class="question-card admin-form">
-      <h2 class="form-title">Câu hỏi mới</h2>
+      <h2 class="form-title" id="form-title">Câu hỏi mới</h2>
       <input type="hidden" id="q-id">
 
       <label class="field">
         <span>Mục / phần</span>
-        <input type="text" id="q-section" placeholder="VD: TRONG DAI HOI X" required>
+        <input type="text" id="q-section" placeholder="VD: Trong Đại hội X" required>
       </label>
 
       <label class="field">
@@ -75,7 +74,7 @@
         </label>
         <label class="field">
           <span>Văn kiện (tuỳ chọn)</span>
-          <input type="text" id="q-source" placeholder="VD: Bao cao Chinh tri">
+          <input type="text" id="q-source" placeholder="VD: Báo cáo Chính trị">
         </label>
       </div>
 
@@ -88,7 +87,7 @@
         <button type="submit" class="btn-next" id="btn-save">Lưu câu hỏi</button>
         <button type="button" class="btn-ghost" id="btn-reset" hidden>Huỷ sửa</button>
       </div>
-      <p id="form-msg" class="form-msg" hidden></p>
+      <p id="form-msg" class="form-msg" aria-live="polite" hidden></p>
     </form>
 
     <section class="question-card list-card">
@@ -98,7 +97,7 @@
         <button type="button" class="btn-ghost" id="btn-export">Xuất JSON</button>
         <label class="btn-ghost btn-file">
           Nhập JSON
-          <input type="file" id="import-file" accept="application/json,.json" hidden>
+          <input type="file" id="import-file" accept="application/json,.json" class="visually-hidden">
         </label>
       </div>
     </section>

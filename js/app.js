@@ -109,8 +109,8 @@ function pickName() {
   el.textContent = name;
   document.getElementById("picker-hint").textContent =
     left > 0
-      ? `Con ${left} ten chua goi.`
-      : "Het danh sach, vong moi bat dau.";
+      ? `Còn ${left} tên chưa gọi.`
+      : "Hết danh sách, vòng mới bắt đầu.";
 }
 
 function spawnStars() {
@@ -192,7 +192,7 @@ function syncTeamSetup() {
   setup.innerHTML = "";
   if (mode === "solo") return;
 
-  const defaults = ["Nhóm 1", "Nhóm 2", "Nhóm 3", "Nhóm 5", "Nhóm 6", "Nhóm 6"];
+  const defaults = ["Nhóm 1", "Nhóm 2", "Nhóm 3", "Nhóm 4", "Nhóm 5", "Nhóm 6"];
   for (let i = 0; i < Number(mode); i += 1) {
     const field = document.createElement("label");
     field.className = "team-name-field";
@@ -273,8 +273,10 @@ function renderQuestion() {
   document.getElementById("quiz-section").textContent = q.section;
   document.getElementById("quiz-progress").textContent =
     `Câu ${state.index + 1} / ${state.questions.length}`;
-  document.getElementById("progress-fill").style.width =
-    `${((state.index + 1) / state.questions.length) * 100}%`;
+  document.getElementById("progress-fill").style.setProperty(
+    "--p",
+    String((state.index + 1) / state.questions.length),
+  );
   renderTeamBoard();
   document.getElementById("question-text").textContent = q.question;
 
@@ -341,7 +343,7 @@ function onPick(key, btn) {
   const verdict = document.getElementById("feedback-verdict");
   verdict.textContent = correct
     ? "Chính xác!"
-    : `Sai rồi — đáp án đúng là ${q.answer}`;
+    : `Chưa đúng, đáp án đúng là ${q.answer}`;
   verdict.className = `feedback-verdict ${correct ? "ok" : "bad"}`;
 
   document.getElementById("feedback-explain").textContent = q.explanation || "";
@@ -415,14 +417,14 @@ function showResult() {
     }
   }
 
-  let msg = "Cung co co day, tap them nua!";
+  let msg = "Củng cố thêm nhé, thử lại vòng mới!";
   if (pct >= 90) msg = "Xuất sắc! Đẳng cấp nhà lịch sử!";
-  else if (pct >= 75) msg = "Giỏi lắm! Năng lực mạnh đấy.";
-  else if (pct >= 50) msg = "Được, nhưng chưa đầy đủ.";
+  else if (pct >= 75) msg = "Giỏi lắm! Phong độ rất tốt.";
+  else if (pct >= 50) msg = "Được đấy, nhưng cần ôn thêm.";
   document.getElementById("result-msg").textContent = msg;
 
   const detail = state.wrongIds.length
-    ? `Sai ca: ${state.wrongIds.join(", ")}`
+    ? `Sai các câu: ${state.wrongIds.join(", ")}`
     : "Không sai câu nào. Tuyệt vời!";
   document.getElementById("result-detail").textContent = detail;
 }
