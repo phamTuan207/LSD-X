@@ -145,6 +145,7 @@ Chủ đề: **Đại hội X** — KTPM67B.
 - Chế độ mặc định có 5 đội: **Nhóm 1, Nhóm 2, Nhóm 3, Nhóm 5, Nhóm 6**; Nhóm 4 được bỏ qua.
 - Giáo viên chọn đội giơ tay nhanh nhất trước mỗi câu; đáp án chỉ mở sau khi chọn đội.
 - Phần giải thích giữ nguyên cho đến khi giáo viên bấm **Câu tiếp theo**.
+- Sau khi chọn đáp án, trang tự đưa phần giải thích vào khung nhìn để giáo viên không phải cuộn tay.
 - Có **Hoàn tác, chọn lại** để sửa nhầm đáp án hoặc nhầm đội, khôi phục điểm và chuỗi.
 - Giao diện đã sửa lỗi nút CTA bị hiển thị trùng; Google Fonts được ghi rõ là dependency online.
 

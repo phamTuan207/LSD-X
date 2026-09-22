@@ -351,6 +351,12 @@ function onPick(key, btn) {
     : "";
   document.getElementById("feedback").hidden = false;
   animateFeedbackIn();
+  requestAnimationFrame(() => {
+    document.getElementById("feedback").scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+  });
 
   const nextBtn = document.getElementById("btn-next");
   const isLast = state.index >= state.questions.length - 1;
