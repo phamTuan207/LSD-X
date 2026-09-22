@@ -1,1 +1,422 @@
-[]
+[
+  {
+    "id": 1,
+    "section": "TRƯỚC ĐẠI HỘI X",
+    "question": "Đại hội X được tổ chức trong bối cảnh đất nước đã trải qua:",
+    "options": {
+      "A": "10 năm đổi mới",
+      "B": "15 năm đổi mới",
+      "C": "20 năm đổi mới",
+      "D": "25 năm đổi mới"
+    },
+    "answer": "C",
+    "explanation": "Đại hội X diễn ra trong bối cảnh Việt Nam đã tiến hành 20 năm công cuộc đổi mới, đồng thời tổng kết 5 năm thực hiện Nghị quyết Đại hội IX.",
+    "source": "Báo cáo Chính trị; Báo cáo kiểm điểm BCH Trung ương khóa IX."
+  },
+  {
+    "id": 2,
+    "section": "TRƯỚC ĐẠI HỘI X",
+    "question": "Việc tổng kết 20 năm đổi mới trước Đại hội X nhằm:",
+    "options": {
+      "A": "Đánh giá toàn diện chặng đường đổi mới đã qua",
+      "B": "Tổng kết những vấn đề lý luận và thực tiễn",
+      "C": "Làm cơ sở để đề ra phương hướng cho giai đoạn mới",
+      "D": "Cả A, B, C"
+    },
+    "answer": "D",
+    "explanation": "Tổng kết 20 năm đổi mới vừa đánh giá thành tựu, hạn chế, vừa từng bước hình thành cơ sở lý luận và thực tiễn cho đường lối giai đoạn tiếp theo.",
+    "source": "Báo cáo kiểm điểm BCH Trung ương khóa IX."
+  },
+  {
+    "id": 3,
+    "section": "TRƯỚC ĐẠI HỘI X",
+    "question": "Tốc độ tăng trưởng GDP bình quân giai đoạn 2001–2005 đạt:",
+    "options": {
+      "A": "6,51%/năm",
+      "B": "7,51%/năm",
+      "C": "8,51%/năm",
+      "D": "9,51%/năm"
+    },
+    "answer": "B",
+    "explanation": "GDP giai đoạn 2001–2005 tăng bình quân 7,51%/năm.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 4,
+    "section": "TRƯỚC ĐẠI HỘI X",
+    "question": "Đến cuối năm 2005, tỷ lệ hộ nghèo của nước ta còn khoảng:",
+    "options": {
+      "A": "5%",
+      "B": "7%",
+      "C": "9%",
+      "D": "11%"
+    },
+    "answer": "B",
+    "explanation": "Tỷ lệ hộ nghèo giảm từ 17,5% năm 2001 xuống khoảng 7% cuối năm 2005.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 5,
+    "section": "TRƯỚC ĐẠI HỘI X",
+    "question": "Một trong những hạn chế của nền kinh tế được Đại hội X chỉ ra là:",
+    "options": {
+      "A": "Chất lượng, hiệu quả và sức cạnh tranh của nền kinh tế còn thấp",
+      "B": "Nền kinh tế không đạt tốc độ tăng trưởng",
+      "C": "Không có sự chuyển dịch cơ cấu kinh tế",
+      "D": "Không có hoạt động xuất khẩu"
+    },
+    "answer": "A",
+    "explanation": "Văn kiện đánh giá nền kinh tế đạt được nhiều thành tựu nhưng chất lượng, hiệu quả và sức cạnh tranh còn thấp.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 6,
+    "section": "TRƯỚC ĐẠI HỘI X",
+    "question": "Một trong những hạn chế về xã hội trước Đại hội X là:",
+    "options": {
+      "A": "Đời sống nhân dân không được cải thiện",
+      "B": "Văn hóa – xã hội phát triển chưa ngang tầm và còn nhiều vấn đề bức xúc",
+      "C": "Không thực hiện chính sách xóa đói giảm nghèo",
+      "D": "Không tạo được việc làm"
+    },
+    "answer": "B",
+    "explanation": "Bên cạnh những thành tựu, văn kiện chỉ ra lĩnh vực văn hóa – xã hội vẫn còn nhiều vấn đề cần giải quyết.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 7,
+    "section": "TRƯỚC ĐẠI HỘI X",
+    "question": "Những vấn đề như quan liêu, tham nhũng, lãng phí trước Đại hội X được xác định là:",
+    "options": {
+      "A": "Đã được giải quyết hoàn toàn",
+      "B": "Chưa bị đẩy lùi",
+      "C": "Không còn ảnh hưởng đến xã hội",
+      "D": "Chỉ là vấn đề kinh tế"
+    },
+    "answer": "B",
+    "explanation": "Văn kiện nêu rõ quan liêu, tham nhũng, lãng phí chưa bị đẩy lùi, đặt ra yêu cầu tiếp tục xây dựng, chỉnh đốn Đảng.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 8,
+    "section": "TRƯỚC ĐẠI HỘI X",
+    "question": "Công tác chuẩn bị Đại hội X được bắt đầu từ:",
+    "options": {
+      "A": "Hội nghị Trung ương 8 khóa IX",
+      "B": "Hội nghị Trung ương 9 khóa IX",
+      "C": "Hội nghị Trung ương 10 khóa IX",
+      "D": "Hội nghị Trung ương 11 khóa IX"
+    },
+    "answer": "C",
+    "explanation": "Công tác chuẩn bị Đại hội X được tiến hành kể từ Hội nghị Trung ương 10, tháng 7/2004.",
+    "source": "Báo cáo kiểm điểm BCH Trung ương khóa IX."
+  },
+  {
+    "id": 9,
+    "section": "TRƯỚC ĐẠI HỘI X",
+    "question": "Các văn kiện trình Đại hội X được xây dựng trên cơ sở:",
+    "options": {
+      "A": "Tổng kết 5 năm thực hiện Nghị quyết Đại hội IX",
+      "B": "Tổng kết lý luận – thực tiễn qua 20 năm đổi mới",
+      "C": "Cả A và B",
+      "D": "Chỉ dựa trên tình hình năm 2005"
+    },
+    "answer": "C",
+    "explanation": "Hai cơ sở quan trọng là tổng kết 5 năm thực hiện Nghị quyết Đại hội IX và 20 năm đổi mới.",
+    "source": "Báo cáo kiểm điểm BCH Trung ương khóa IX."
+  },
+  {
+    "id": 10,
+    "section": "TRƯỚC ĐẠI HỘI X",
+    "question": "Ban Chấp hành Trung ương khóa IX đã tổ chức bao nhiêu Hội nghị Trung ương?",
+    "options": {
+      "A": "10",
+      "B": "12",
+      "C": "15",
+      "D": "20"
+    },
+    "answer": "C",
+    "explanation": "Trong nhiệm kỳ khóa IX, BCH Trung ương đã tổ chức 15 Hội nghị Trung ương.",
+    "source": "Báo cáo kiểm điểm sự lãnh đạo, chỉ đạo của BCH Trung ương khóa IX."
+  },
+  {
+    "id": 11,
+    "section": "TRONG ĐẠI HỘI X",
+    "question": "Đại hội đại biểu toàn quốc lần thứ X của Đảng diễn ra từ:",
+    "options": {
+      "A": "18/4/2006 đến 25/4/2006",
+      "B": "20/4/2006 đến 27/4/2006",
+      "C": "18/5/2006 đến 25/5/2006",
+      "D": "15/4/2006 đến 25/4/2006"
+    },
+    "answer": "A",
+    "explanation": "Đại hội X diễn ra từ 18 đến 25/4/2006.",
+    "source": "Tài liệu Đại hội X."
+  },
+  {
+    "id": 12,
+    "section": "TRONG ĐẠI HỘI X",
+    "question": "Chủ đề của Đại hội X là:",
+    "options": {
+      "A": "Đẩy mạnh công nghiệp hóa, hiện đại hóa đất nước",
+      "B": "Nâng cao năng lực lãnh đạo và sức chiến đấu của Đảng, phát huy sức mạnh toàn dân tộc, đẩy mạnh toàn diện công cuộc đổi mới, sớm đưa nước ta ra khỏi tình trạng kém phát triển",
+      "C": "Đổi mới toàn diện và hội nhập quốc tế",
+      "D": "Phát triển nhanh và bền vững"
+    },
+    "answer": "B",
+    "explanation": "Đây là chủ đề chính thức của Đại hội X, gồm 4 thành tố lớn.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 13,
+    "section": "TRONG ĐẠI HỘI X",
+    "question": "Thành tố thứ nhất trong chủ đề Đại hội X là:",
+    "options": {
+      "A": "Phát huy sức mạnh toàn dân tộc",
+      "B": "Đẩy mạnh toàn diện công cuộc đổi mới",
+      "C": "Nâng cao năng lực lãnh đạo và sức chiến đấu của Đảng",
+      "D": "Sớm đưa nước ta ra khỏi tình trạng kém phát triển"
+    },
+    "answer": "C",
+    "explanation": "Thứ tự thành tố trong chủ đề Đại hội X: (1) Nâng cao năng lực lãnh đạo và sức chiến đấu của Đảng.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 14,
+    "section": "TRONG ĐẠI HỘI X",
+    "question": "Thành tố thứ hai trong chủ đề Đại hội X là:",
+    "options": {
+      "A": "Phát huy sức mạnh toàn dân tộc",
+      "B": "Xây dựng Nhà nước pháp quyền XHCN",
+      "C": "Đẩy mạnh toàn diện công cuộc đổi mới",
+      "D": "Sớm đưa nước ta ra khỏi tình trạng kém phát triển"
+    },
+    "answer": "A",
+    "explanation": "Thứ tự thành tố trong chủ đề Đại hội X: (2) Phát huy sức mạnh toàn dân tộc.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 15,
+    "section": "TRONG ĐẠI HỘI X",
+    "question": "Nội dung trong thành tố thứ ba của chủ đề Đại hội X là:",
+    "options": {
+      "A": "Đẩy mạnh toàn diện công cuộc đổi mới",
+      "B": "Đổi mới toàn diện, đồng bộ, có kế thừa",
+      "C": "Đổi mới phải vì lợi ích nhân dân",
+      "D": "Tất cả đều sai"
+    },
+    "answer": "A",
+    "explanation": "Thứ tự thành tố trong chủ đề Đại hội X: (3) Đẩy mạnh toàn diện công cuộc đổi mới.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 16,
+    "section": "TRONG ĐẠI HỘI X",
+    "question": "Nội dung trong thành tố thứ tư của chủ đề Đại hội X là:",
+    "options": {
+      "A": "Phát huy sức mạnh toàn dân tộc",
+      "B": "Sớm đưa nước ta ra khỏi tình trạng kém phát triển",
+      "C": "Đẩy mạnh toàn diện công cuộc đổi mới",
+      "D": "Nâng cao năng lực lãnh đạo của Đảng"
+    },
+    "answer": "B",
+    "explanation": "Thứ tự thành tố trong chủ đề Đại hội X: (4) Sớm đưa nước ta ra khỏi tình trạng kém phát triển.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 17,
+    "section": "TRONG ĐẠI HỘI X",
+    "question": "Đại hội X xác định mục tiêu trực tiếp của giai đoạn 2006–2010 là:",
+    "options": {
+      "A": "Trở thành nước phát triển",
+      "B": "Hoàn thành công nghiệp hóa, hiện đại hóa",
+      "C": "Sớm đưa nước ta ra khỏi tình trạng kém phát triển",
+      "D": "Trở thành nước có thu nhập cao"
+    },
+    "answer": "C",
+    "explanation": "Đây là mục tiêu trực tiếp được thể hiện trong chủ đề và phương hướng phát triển giai đoạn 2006–2010.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 18,
+    "section": "TRONG ĐẠI HỘI X",
+    "question": "Đại hội X đề ra mục tiêu tăng trưởng GDP bình quân giai đoạn 2006–2010 là:",
+    "options": {
+      "A": "5–6%/năm",
+      "B": "6–7%/năm",
+      "C": "7,5–8%/năm, phấn đấu trên 8%/năm",
+      "D": "9–10%/năm"
+    },
+    "answer": "C",
+    "explanation": "Mục tiêu tăng trưởng GDP bình quân được xác định ở mức 7,5–8%/năm, phấn đấu đạt trên 8%/năm.",
+    "source": "Báo cáo phương hướng, nhiệm vụ phát triển KT-XH 2006–2010."
+  },
+  {
+    "id": 19,
+    "section": "TRONG ĐẠI HỘI X",
+    "question": "Đại hội X xác định đến năm 2020 nước ta cơ bản trở thành:",
+    "options": {
+      "A": "Một nước phát triển",
+      "B": "Một nước công nghiệp theo hướng hiện đại",
+      "C": "Một nước có thu nhập cao",
+      "D": "Một nước công nghiệp hoàn chỉnh"
+    },
+    "answer": "B",
+    "explanation": "Mục tiêu đến năm 2020 là cơ bản trở thành một nước công nghiệp theo hướng hiện đại.",
+    "source": "Báo cáo phương hướng, nhiệm vụ phát triển KT-XH 2006–2010."
+  },
+  {
+    "id": 20,
+    "section": "TRONG ĐẠI HỘI X",
+    "question": "Để tạo cơ sở cho phát triển kinh tế, Đại hội X xác định cần:",
+    "options": {
+      "A": "Hoàn thiện thể chế kinh tế thị trường định hướng XHCN",
+      "B": "Tiếp tục cơ chế tập trung bao cấp",
+      "C": "Hạn chế các thành phần kinh tế",
+      "D": "Đóng cửa nền kinh tế"
+    },
+    "answer": "A",
+    "explanation": "Đại hội X xác định tiếp tục hoàn thiện thể chế kinh tế thị trường định hướng XHCN.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 21,
+    "section": "CÁC NỘI DUNG TRỌNG TÂM CỦA ĐẠI HỘI X",
+    "question": "Đại hội X có sự tiếp thu và bổ sung bao nhiêu đặc trưng mới của chủ nghĩa xã hội mà nhân dân ta xây dựng so với Cương lĩnh năm 1991?",
+    "options": {
+      "A": "2",
+      "B": "4",
+      "C": "3",
+      "D": "5"
+    },
+    "answer": "A",
+    "explanation": "Đại hội X bổ sung 2 đặc trưng mới so với Cương lĩnh năm 1991.",
+    "source": "Báo cáo Chính trị Đại hội X."
+  },
+  {
+    "id": 22,
+    "section": "CÁC NỘI DUNG TRỌNG TÂM CỦA ĐẠI HỘI X",
+    "question": "Hai đặc trưng mới được Đại hội X bổ sung so với Cương lĩnh năm 1991 là:",
+    "options": {
+      "A": "Dân giàu, nước mạnh, công bằng, dân chủ, văn minh",
+      "B": "Có Nhà nước pháp quyền XHCN của nhân dân, do nhân dân, vì nhân dân dưới sự lãnh đạo của Đảng",
+      "C": "Cả A và B",
+      "D": "Không có đặc trưng nào được bổ sung"
+    },
+    "answer": "C",
+    "explanation": "Hai nội dung trên là 2 đặc trưng mới được bổ sung trong nhận thức về chủ nghĩa xã hội mà nhân dân ta xây dựng.",
+    "source": "Báo cáo Chính trị Đại hội X."
+  },
+  {
+    "id": 23,
+    "section": "CÁC NỘI DUNG TRỌNG TÂM CỦA ĐẠI HỘI X",
+    "question": "Đại hội X đã chỉ ra mấy bài học để tiếp tục hoàn thiện đường lối chỉ đạo, đẩy mạnh sự nghiệp đổi mới?",
+    "options": {
+      "A": "5",
+      "B": "2",
+      "C": "3",
+      "D": "4"
+    },
+    "answer": "A",
+    "explanation": "Đại hội X tổng kết thực tiễn 20 năm đổi mới và rút ra 5 bài học kinh nghiệm.",
+    "source": "Báo cáo Chính trị Đại hội X."
+  },
+  {
+    "id": 24,
+    "section": "CÁC NỘI DUNG TRỌNG TÂM CỦA ĐẠI HỘI X",
+    "question": "Đại hội X đã chỉ ra những bài học nào để tiếp tục hoàn thiện đường lối chỉ đạo đẩy mạnh sự nghiệp đổi mới?",
+    "options": {
+      "A": "Kiên định mục tiêu độc lập dân tộc và chủ nghĩa xã hội",
+      "B": "Đổi mới toàn diện, đồng bộ, có kế thừa",
+      "C": "Đổi mới phải vì lợi ích của nhân dân, dựa vào nhân dân",
+      "D": "Cả A, B, C"
+    },
+    "answer": "D",
+    "explanation": "Các nội dung trên đều thuộc những bài học được rút ra từ thực tiễn đổi mới.",
+    "source": "Báo cáo Chính trị Đại hội X."
+  },
+  {
+    "id": 25,
+    "section": "CÁC NỘI DUNG TRỌNG TÂM CỦA ĐẠI HỘI X",
+    "question": "Đại hội X xác định nhiệm vụ then chốt là:",
+    "options": {
+      "A": "Xây dựng Nhà nước pháp quyền XHCN",
+      "B": "Xây dựng và chỉnh đốn Đảng",
+      "C": "Xây dựng Đảng",
+      "D": "Tất cả ý trên"
+    },
+    "answer": "B",
+    "explanation": "Đại hội X nhấn mạnh xây dựng Đảng trong sạch, vững mạnh là khâu then chốt, là nhân tố quyết định thắng lợi của sự nghiệp đổi mới.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 26,
+    "section": "CÁC NỘI DUNG TRỌNG TÂM CỦA ĐẠI HỘI X",
+    "question": "Công tác xây dựng Đảng theo Đại hội X được tiến hành trên các mặt:",
+    "options": {
+      "A": "Chính trị, tư tưởng",
+      "B": "Tổ chức, cán bộ",
+      "C": "Đổi mới phương thức lãnh đạo",
+      "D": "Cả A, B, C"
+    },
+    "answer": "D",
+    "explanation": "Xây dựng Đảng được xác định phải tiến hành toàn diện về chính trị, tư tưởng, tổ chức, cán bộ và phương thức lãnh đạo.",
+    "source": "Báo cáo Chính trị."
+  },
+  {
+    "id": 27,
+    "section": "CÁC NỘI DUNG TRỌNG TÂM CỦA ĐẠI HỘI X",
+    "question": "Theo Điều lệ Đảng được Đại hội X thông qua, nền tảng tư tưởng của Đảng là:",
+    "options": {
+      "A": "Chủ nghĩa Mác – Lênin",
+      "B": "Tư tưởng Hồ Chí Minh",
+      "C": "Chủ nghĩa Mác – Lênin và tư tưởng Hồ Chí Minh",
+      "D": "Chủ nghĩa xã hội khoa học"
+    },
+    "answer": "C",
+    "explanation": "Điều lệ Đảng xác định chủ nghĩa Mác – Lênin và tư tưởng Hồ Chí Minh là nền tảng tư tưởng của Đảng.",
+    "source": "Điều lệ Đảng Cộng sản Việt Nam, Đại hội X."
+  },
+  {
+    "id": 28,
+    "section": "CÁC NỘI DUNG TRỌNG TÂM CỦA ĐẠI HỘI X",
+    "question": "Một trong những nội dung thể hiện việc phát huy dân chủ trong quá trình Đại hội X là:",
+    "options": {
+      "A": "Công khai dự thảo Báo cáo Chính trị để nhân dân góp ý",
+      "B": "Công khai báo cáo kiểm điểm của BCH Trung ương khóa IX",
+      "C": "Thực hiện dân chủ trong bầu BCH Trung ương khóa X",
+      "D": "Cả A, B, C"
+    },
+    "answer": "D",
+    "explanation": "Quá trình chuẩn bị và tổ chức Đại hội X chú trọng phát huy dân chủ, lấy ý kiến rộng rãi và thực hiện dân chủ trong công tác nhân sự.",
+    "source": "Báo cáo kiểm điểm BCH Trung ương khóa IX."
+  },
+  {
+    "id": 29,
+    "section": "CÁC NỘI DUNG TRỌNG TÂM CỦA ĐẠI HỘI X",
+    "question": "Theo Điều lệ Đảng được Đại hội X thông qua, nguyên tắc tổ chức cơ bản của Đảng là:",
+    "options": {
+      "A": "Tập trung dân chủ",
+      "B": "Phân quyền",
+      "C": "Cá nhân lãnh đạo tuyệt đối",
+      "D": "Tự quản"
+    },
+    "answer": "A",
+    "explanation": "Điều lệ Đảng xác định tổ chức và hoạt động của Đảng theo nguyên tắc tập trung dân chủ.",
+    "source": "Điều lệ Đảng Cộng sản Việt Nam, Đại hội X."
+  },
+  {
+    "id": 30,
+    "section": "CÁC NỘI DUNG TRỌNG TÂM CỦA ĐẠI HỘI X",
+    "question": "Theo Đại hội X, để tiếp tục đẩy mạnh công cuộc đổi mới cần:",
+    "options": {
+      "A": "Kiên định mục tiêu độc lập dân tộc và chủ nghĩa xã hội",
+      "B": "Đổi mới toàn diện, đồng bộ, có kế thừa",
+      "C": "Đổi mới phải vì lợi ích của nhân dân, dựa vào nhân dân",
+      "D": "Cả A, B, C"
+    },
+    "answer": "D",
+    "explanation": "Đây là những nội dung nằm trong các bài học kinh nghiệm được tổng kết từ thực tiễn đổi mới, làm cơ sở tiếp tục hoàn thiện đường lối trong giai đoạn mới.",
+    "source": "Báo cáo Chính trị Đại hội X."
+  }
+]
