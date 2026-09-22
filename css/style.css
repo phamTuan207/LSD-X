@@ -18,6 +18,7 @@
   --bad: #f87171;
   --font-display: "Playfair Display", Georgia, serif;
   --font-body: "Be Vietnam Pro", system-ui, sans-serif;
+  --font-script: "Dancing Script", cursive;
   --shadow-card: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
 
@@ -386,6 +387,86 @@ body::before {
 .site-header .badge {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+
+/* film grain — ThreeUI demo texture, ultra light */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* script accent — Dancing Script (vietnamese subset) */
+.script-accent,
+.picker-result,
+.result-msg,
+.start-title em,
+.site-header h1 em {
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-style: normal;
+}
+
+.picker-result {
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  letter-spacing: 0.02em;
+}
+
+.result-msg {
+  font-size: clamp(1.45rem, 3.5vw, 1.85rem);
+}
+
+.start-title em,
+.site-header h1 em {
+  font-weight: 700;
+  padding-right: 0.06em;
+}
+
+/* ThreeUI gradient beam — spinning conic border on primary CTA */
+.btn-next {
+  position: relative;
+  isolation: isolate;
+  border: none;
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  overflow: hidden;
+}
+
+.btn-next::before {
+  content: "";
+  position: absolute;
+  inset: -200%;
+  z-index: -2;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 280deg,
+    var(--gold-soft) 340deg,
+    #fff 360deg
+  );
+  animation: beam-spin 3.2s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-next:hover::before,
+.btn-next:focus-visible::before {
+  opacity: 1;
+}
+
+.btn-next::after {
+  content: "";
+  position: absolute;
+  inset: 1.5px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(160deg, var(--gold-soft), var(--gold));
+}
+
+@keyframes beam-spin {
+  to { transform: rotate(360deg); }
 }
 
 /* —— start screen —— */
@@ -907,6 +988,7 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   .stars-layer .star,
   .flag-wave,
-  .flag-star { animation: none; }
+  .flag-star,
+  .btn-next::before { animation: none; }
   * { transition-duration: 0.01ms !important; }
 }

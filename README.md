@@ -111,6 +111,9 @@ LSD-X/
 | liquid-glass-js (MIT) | CTA “Bắt đầu” / “Gọi tên” (WebGL); card CSS glass hybrid |
 | Canvas confetti | Lá vàng khi đúng câu / điểm ≥75% |
 | ThreeUI Crimson Horizon | Nền WebGL đỏ–vàng chạy full-page — port shader EmeraldHorizon từ [MengTo/threeui](https://github.com/MengTo/threeui) (MIT), recolor ceremonial. File: `js/horizon-bg.js` |
+| ThreeUI Gradient Beam | Viền xoay quanh nút chính khi hover — port từ source `gradient-beam-cta` / `spinning-border-button` |
+| Dancing Script | Font viết tay uốn lượn (subset vi) làm điểm nhấn: tên rút thưởng, câu nhận xét, chữ *X* trong tiêu đề |
+| Film grain | Lớp noise SVG siêu nhẹ (`grain-overlay`) — texture kiểu ThreeUI demo |
 
 ---
 
