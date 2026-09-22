@@ -164,20 +164,19 @@ function animateQuestionIn() {
   const tl = gsap.timeline({ onComplete: () => { state.animating = false; } });
   tl.fromTo(
     ".question-card",
-    { y: 56, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
+    { y: -40, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" },
   );
   tl.fromTo(
     "#question-text",
-    { opacity: 0, y: 12 },
-    { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
-    "-=0.2",
+    { opacity: 0, y: 16 },
+    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+    "-=0.15",
   );
   tl.fromTo(
     ".option",
-    { opacity: 0, x: -12 },
-    { opacity: 1, x: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" },
-    "-=0.15",
+    { opacity: 0, y: 14 },
+    { opacity: 1, y: 0, duration: 0.35, stagger: 0.07, ease: "power2.out", delay: 0.05 },
   );
 }
 
@@ -318,9 +317,9 @@ function advance() {
 
   state.animating = true;
   gsap.to(".question-card", {
-    y: -56,
+    y: -72,
     opacity: 0,
-    duration: 0.32,
+    duration: 0.3,
     ease: "power2.in",
     onComplete: go,
   });
@@ -357,15 +356,22 @@ function onKey(e) {
   if (e.repeat) return;
   const key = e.key.toUpperCase();
 
-  if (document.getElementById("start") && !document.getElementById("start").hidden) {
+  const startEl = document.getElementById("start");
+  const quizEl = document.getElementById("quiz");
+  const resultEl = document.getElementById("result");
+
+  if (startEl && !startEl.hidden) {
     if (key === "ENTER" || key === " ") {
+      // don't steal Enter/Space from focusable controls on start card
+      const tag = e.target && e.target.tagName;
+      if (tag === "SELECT" || tag === "INPUT" || tag === "BUTTON") return;
       e.preventDefault();
       startGame();
     }
     return;
   }
 
-  if (document.getElementById("quiz") && !document.getElementById("quiz").hidden) {
+  if (quizEl && !quizEl.hidden) {
     if (["A", "B", "C", "D"].includes(key)) {
       const btn = document.querySelector(`.option[data-key="${key}"]`);
       if (btn && !btn.disabled) {
@@ -381,8 +387,8 @@ function onKey(e) {
     return;
   }
 
-  if (document.getElementById("result") && !document.getElementById("result").hidden) {
-    if (key === "ENTER") {
+  if (resultEl && !resultEl.hidden) {
+    if (key === "ENTER" && !e.target.closest("button, a, select, input")) {
       e.preventDefault();
       retry();
     }
@@ -400,6 +406,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   spawnStars();
   loadPickerNames();
   document.addEventListener("keydown", onKey);
+  // bubble wheel from document (window listener misses some layouts)
   document.addEventListener("wheel", onWheel, { passive: false });
   initSwipe();
   document.getElementById("btn-toggle-picker").addEventListener("click", showPicker);
