@@ -18,6 +18,8 @@ function startGame() {
   state.index = 0;
   state.score = 0;
   state.wrongIds = [];
+  state.teams = readTeams();
+  state.activeTeam = state.teams.length ? null : 0;
   document.getElementById("start").hidden = true;
   document.getElementById("result").hidden = true;
   renderQuestion();
@@ -84,7 +86,7 @@ function pickName() {
   savePickerNames();
 
   if (!lines.length) {
-    alert("Nhap danh sach ten truoc");
+    alert("Nhập danh sách tên trước");
     return;
   }
 
@@ -133,7 +135,78 @@ const state = {
   score: 0,
   wrongIds: [],
   animating: false,
+  teams: [],
+  activeTeam: 0,
+  answerSnapshot: null,
 };
+
+function readTeams() {
+  const mode = document.getElementById("opt-mode").value;
+  if (mode === "solo") return [];
+  const count = Number(mode);
+  return Array.from({ length: count }, (_, i) => ({
+    name: document.getElementById(`team-name-${i}`).value.trim() || `Đội ${i + 1}`,
+    score: 0,
+    streak: 0,
+    bestStreak: 0,
+  }));
+}
+
+function renderTeamBoard() {
+  const board = document.getElementById("team-scoreboard");
+  board.innerHTML = "";
+  board.hidden = !state.teams.length;
+  if (!state.teams.length) return;
+
+  const label = document.createElement("span");
+  label.className = "team-board-label";
+  label.textContent = state.activeTeam == null
+    ? "Chọn đội giơ tay nhanh nhất"
+    : "Đội giơ tay nhanh nhất";
+  board.appendChild(label);
+
+  state.teams.forEach((team, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.disabled = state.locked;
+    button.className = `team-chip${index === state.activeTeam ? " is-active" : ""}`;
+    button.setAttribute("aria-pressed", String(index === state.activeTeam));
+    button.textContent = `${team.name} · ${team.score} điểm`;
+    button.addEventListener("click", () => {
+      if (state.locked) return;
+      state.activeTeam = index;
+      renderTeamBoard();
+      document.querySelectorAll(".option").forEach((option) => {
+        option.disabled = false;
+      });
+    });
+    board.appendChild(button);
+  });
+}
+
+function syncTeamSetup() {
+  const mode = document.getElementById("opt-mode").value;
+  const setup = document.getElementById("team-setup");
+  const previousNames = [...setup.querySelectorAll("input")].map((input) => input.value);
+  setup.hidden = mode === "solo";
+  setup.innerHTML = "";
+  if (mode === "solo") return;
+
+  const defaults = ["Nhóm 1", "Nhóm 2", "Nhóm 3", "Nhóm 5", "Nhóm 6", "Nhóm 6"];
+  for (let i = 0; i < Number(mode); i += 1) {
+    const field = document.createElement("label");
+    field.className = "team-name-field";
+    const label = document.createElement("span");
+    label.textContent = `Tên đội ${i + 1}`;
+    const input = document.createElement("input");
+    input.id = `team-name-${i}`;
+    input.type = "text";
+    input.maxLength = 24;
+    input.value = previousNames[i] || defaults[i];
+    field.append(label, input);
+    setup.appendChild(field);
+  }
+}
 
 function getBank() {
   const raw = localStorage.getItem("lsd-dhx-questions");
@@ -194,12 +267,15 @@ function renderQuestion() {
   const q = state.questions[state.index];
   if (!q) return;
   state.locked = false;
+  state.answerSnapshot = null;
+  if (state.teams.length) state.activeTeam = null;
 
   document.getElementById("quiz-section").textContent = q.section;
   document.getElementById("quiz-progress").textContent =
     `Câu ${state.index + 1} / ${state.questions.length}`;
   document.getElementById("progress-fill").style.width =
     `${((state.index + 1) / state.questions.length) * 100}%`;
+  renderTeamBoard();
   document.getElementById("question-text").textContent = q.question;
 
   document.getElementById("feedback").hidden = true;
@@ -211,6 +287,7 @@ function renderQuestion() {
     btn.type = "button";
     btn.className = "option";
     btn.dataset.key = key;
+    btn.disabled = state.teams.length > 0 && state.activeTeam == null;
     btn.innerHTML =
       `<span class="option-key">${key}</span><span>${text}</span>`;
     btn.addEventListener("click", () => onPick(key, btn));
@@ -225,12 +302,24 @@ function renderQuestion() {
 
 function onPick(key, btn) {
   if (state.locked) return;
+  if (state.teams.length && state.activeTeam == null) return;
+  state.answerSnapshot = {
+    score: state.score,
+    wrongIds: [...state.wrongIds],
+    teams: state.teams.map((team) => ({ ...team })),
+  };
   state.locked = true;
 
   const q = state.questions[state.index];
   const correct = key === q.answer;
   if (correct) {
     state.score += 1;
+    if (state.teams.length) {
+      const team = state.teams[state.activeTeam];
+      team.score += 1;
+      team.streak += 1;
+      team.bestStreak = Math.max(team.bestStreak, team.streak);
+    }
     // subtle gold-leaf: center card, restrained count
     const card = document.querySelector(".question-card");
     const rect = card ? card.getBoundingClientRect() : null;
@@ -239,7 +328,9 @@ function onPick(key, btn) {
     confetti.burst(cx, cy, 36);
   } else {
     state.wrongIds.push(q.id);
+    if (state.teams.length) state.teams[state.activeTeam].streak = 0;
   }
+  renderTeamBoard();
 
   for (const el of document.querySelectorAll(".option")) {
     el.disabled = true;
@@ -250,19 +341,37 @@ function onPick(key, btn) {
   const verdict = document.getElementById("feedback-verdict");
   verdict.textContent = correct
     ? "Chính xác!"
-    : `Sai roi — dap an dung la ${q.answer}`;
+    : `Sai rồi — đáp án đúng là ${q.answer}`;
   verdict.className = `feedback-verdict ${correct ? "ok" : "bad"}`;
 
   document.getElementById("feedback-explain").textContent = q.explanation || "";
   document.getElementById("feedback-source").textContent = q.source
-    ? `Van kien: ${q.source}`
+    ? `Văn kiện: ${q.source}`
     : "";
   document.getElementById("feedback").hidden = false;
   animateFeedbackIn();
 
   const nextBtn = document.getElementById("btn-next");
   const isLast = state.index >= state.questions.length - 1;
-  nextBtn.textContent = isLast ? "Xem ket qua →" : "Cau tiep theo →";
+  nextBtn.textContent = isLast ? "Xem kết quả →" : "Câu tiếp theo →";
+}
+
+function undoAnswer() {
+  if (!state.locked || !state.answerSnapshot) return;
+
+  state.score = state.answerSnapshot.score;
+  state.wrongIds = [...state.answerSnapshot.wrongIds];
+  state.teams = state.answerSnapshot.teams.map((team) => ({ ...team }));
+  state.activeTeam = state.teams.length ? null : 0;
+  state.locked = false;
+  state.answerSnapshot = null;
+
+  document.getElementById("feedback").hidden = true;
+  document.querySelectorAll(".option").forEach((option) => {
+    option.disabled = state.teams.length > 0;
+    option.classList.remove("is-correct", "is-wrong");
+  });
+  renderTeamBoard();
 }
 
 function showResult() {
@@ -271,6 +380,22 @@ function showResult() {
 
   document.getElementById("quiz").hidden = true;
   document.getElementById("result").hidden = false;
+  const resultTeams = document.getElementById("result-teams");
+  resultTeams.hidden = !state.teams.length;
+  resultTeams.innerHTML = "";
+  if (state.teams.length) {
+    const heading = document.createElement("p");
+    heading.className = "result-teams-title";
+    heading.textContent = "Bảng điểm đội";
+    resultTeams.appendChild(heading);
+    [...state.teams]
+      .sort((a, b) => b.score - a.score)
+      .forEach((team) => {
+        const row = document.createElement("p");
+        row.textContent = `${team.name}: ${team.score} điểm · Chuỗi tốt nhất ${team.bestStreak}`;
+        resultTeams.appendChild(row);
+      });
+  }
   document.getElementById("result-score").textContent =
     `${state.score}/${total}`;
 
@@ -285,14 +410,14 @@ function showResult() {
   }
 
   let msg = "Cung co co day, tap them nua!";
-  if (pct >= 90) msg = "Xuat sac! Dang cap nha lich su!";
-  else if (pct >= 75) msg = "Gioi lam! Nang luc manh day.";
-  else if (pct >= 50) msg = "Duoc, nhung chua day du.";
+  if (pct >= 90) msg = "Xuất sắc! Đẳng cấp nhà lịch sử!";
+  else if (pct >= 75) msg = "Giỏi lắm! Năng lực mạnh đấy.";
+  else if (pct >= 50) msg = "Được, nhưng chưa đầy đủ.";
   document.getElementById("result-msg").textContent = msg;
 
   const detail = state.wrongIds.length
     ? `Sai ca: ${state.wrongIds.join(", ")}`
-    : "Khong sai ca nao.uy tuyet!";
+    : "Không sai câu nào. Tuyệt vời!";
   document.getElementById("result-detail").textContent = detail;
 }
 
@@ -323,29 +448,6 @@ function advance() {
     ease: "power2.in",
     onComplete: go,
   });
-}
-
-// wheel / trackpad: down = next, only when answered, debounced by state.animating
-function onWheel(e) {
-  const quiz = document.getElementById("quiz");
-  if (!quiz || quiz.hidden) return;
-  if (e.deltaY < 24) return;
-  e.preventDefault();
-  advance();
-}
-
-// touch: finger swipe UP = next (matches native scroll-down)
-function initSwipe() {
-  let y0 = null;
-  document.addEventListener("touchstart", (e) => {
-    y0 = e.touches[0].clientY;
-  }, { passive: true });
-  document.addEventListener("touchend", (e) => {
-    if (y0 == null) return;
-    const dy = e.changedTouches[0].clientY - y0;
-    y0 = null;
-    if (dy < -80) advance();
-  }, { passive: true });
 }
 
 function nextQuestion() {
@@ -380,10 +482,6 @@ function onKey(e) {
       }
       return;
     }
-    if (key === "ENTER" && state.locked) {
-      e.preventDefault();
-      advance();
-    }
     return;
   }
 
@@ -406,16 +504,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   spawnStars();
   loadPickerNames();
   document.addEventListener("keydown", onKey);
-  // bubble wheel from document (window listener misses some layouts)
-  document.addEventListener("wheel", onWheel, { passive: false });
-  initSwipe();
   document.getElementById("btn-toggle-picker").addEventListener("click", showPicker);
   document.getElementById("btn-picker-back").addEventListener("click", hidePicker);
   document.getElementById("btn-pick").addEventListener("click", pickName);
   document.getElementById("picker-names").addEventListener("change", savePickerNames);
   document.getElementById("btn-start").addEventListener("click", startGame);
   document.getElementById("btn-next").addEventListener("click", nextQuestion);
+  document.getElementById("btn-undo").addEventListener("click", undoAnswer);
   document.getElementById("btn-retry").addEventListener("click", retry);
+  document.getElementById("opt-mode").addEventListener("change", syncTeamSetup);
+  syncTeamSetup();
   try {
     state.questions = await loadQuestions();
     fillSectionOptions(state.questions);
@@ -423,6 +521,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("start").hidden = false;
   } catch (err) {
     document.getElementById("loading").textContent =
-      `Khong tai duoc cau hoi: ${err.message}`;
+      `Không tải được câu hỏi: ${err.message}`;
   }
 });

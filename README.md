@@ -2,7 +2,7 @@
 
 Minigame trắc nghiệm dùng trong lớp: **Đại hội đại biểu toàn quốc lần thứ X của Đảng Cộng sản Việt Nam**.
 
-Chạy hoàn toàn trên **localhost**, không cần backend, không cần cài gì phức tạp.
+Chạy trên **localhost**, không cần backend, không cần cài gì phức tạp. Lần đầu mở trang cần internet để tải Google Fonts; gameplay và dữ liệu vẫn chạy bằng các file local.
 
 ---
 
@@ -24,11 +24,13 @@ Chạy hoàn toàn trên **localhost**, không cần backend, không cần cài 
 ### Cách chơi (mode lớp học)
 
 - Giáo viên chiếu trang lên máy chiếu / màn hình chung.
-- Ở màn khởi động, chọn **Bắt đầu** (có thể tick *Xáo trộn*).
+- Ở màn khởi động, chọn **Bắt đầu** (có thể tick *Xáo trộn* và chọn từ **2 đến 6 đội**).
 - Mỗi câu: giáo viên đọc câu hỏi, **rút tên** học sinh (nút *Gọi tên ngẫu nhiên*), bạn đó trả lời miệng.
-- Người bấm máy chọn đáp án trên màn → hiện đúng/sai + lý giải + văn kiện → **Câu tiếp theo** (hoặc phím **Enter**).
+- Người bấm máy chọn đáp án trên màn → hiện đúng/sai + lý giải + văn kiện. Giáo viên có thời gian giải thích, rồi bấm **Câu tiếp theo** để tiếp tục.
+- Nếu bấm nhầm đáp án hoặc chọn nhầm đội, bấm **Hoàn tác, chọn lại** trong phần lý giải rồi thực hiện lại câu đó.
 - Phím tắt: **A–D** chọn đáp án.
-- Cuối trận: điểm tổng cả lớp, danh sách câu sai, nút chơi lại.
+- Khi chơi theo đội, giáo viên bấm vào đội giơ tay nhanh nhất trước khi người chơi trả lời; lựa chọn sẽ khóa sau khi nộp đáp án. Câu đúng cộng điểm và theo dõi chuỗi đúng.
+- Cuối trận: điểm tổng, bảng điểm đội, danh sách câu sai, nút chơi lại.
 
 ### Gọi tên học sinh
 
@@ -78,7 +80,7 @@ LSD-X/
 
 - **Mỗi feature = 1 commit**, message tiếng Việt không dấu, kiểu `them ...`, `bo ...`, `sua ...`.
 - Không thêm build step / framework — vanilla HTML/CSS/JS, mở localhost là chạy.
-- Library chỉ nhận qua vendored file trong `js/vendor/` (không CDN bắt buộc, offline được).
+- Library nhận qua vendored file trong `js/vendor/`; Google Fonts là dependency online duy nhất của phần trình bày.
 - `localStorage` keys: `lsd-dhx-questions`, `lsd-dhx-names`.
 - Tôn trọng `prefers-reduced-motion` (confetti, sao rơi, GSAP).
 
@@ -122,3 +124,13 @@ LSD-X/
 Phạm Tuấn Huy · Nguyễn Vũ Đức Thịnh · Hà Đức Long · Trần Hoàng Anh · Phùng Thiệu Quang
 
 Chủ đề: **Đại hội X** — KTPM67B.
+
+### Cập nhật gần đây
+
+- Chế độ mặc định có 5 đội: **Nhóm 1, Nhóm 2, Nhóm 3, Nhóm 5, Nhóm 6**; Nhóm 4 được bỏ qua.
+- Giáo viên chọn đội giơ tay nhanh nhất trước mỗi câu; đáp án chỉ mở sau khi chọn đội.
+- Phần giải thích giữ nguyên cho đến khi giáo viên bấm **Câu tiếp theo**.
+- Có **Hoàn tác, chọn lại** để sửa nhầm đáp án hoặc nhầm đội, khôi phục điểm và chuỗi.
+- Giao diện đã sửa lỗi nút CTA bị hiển thị trùng; Google Fonts được ghi rõ là dependency online.
+
+pull request #1: add classroom team scoring, teacher-controlled pacing, and answer undo.
