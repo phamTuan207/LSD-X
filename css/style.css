@@ -470,6 +470,25 @@ body::before {
 
 .option:disabled:not(.is-correct):not(.is-wrong) { opacity: 0.5; }
 
+.kbd-hint {
+  margin-top: 0.9rem;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  opacity: 0.8;
+}
+
+.kbd-hint kbd {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border-radius: 5px;
+  border: 1px solid var(--gold-dim);
+  background: rgba(0, 0, 0, 0.3);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gold-soft);
+}
+
 /* feedback */
 .feedback {
   margin-top: 1.35rem;

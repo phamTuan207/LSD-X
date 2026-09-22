@@ -152,6 +152,42 @@ function nextQuestion() {
   renderQuestion();
 }
 
+function onKey(e) {
+  if (e.repeat) return;
+  const key = e.key.toUpperCase();
+
+  if (document.getElementById("start") && !document.getElementById("start").hidden) {
+    if (key === "ENTER" || key === " ") {
+      e.preventDefault();
+      startGame();
+    }
+    return;
+  }
+
+  if (document.getElementById("quiz") && !document.getElementById("quiz").hidden) {
+    if (["A", "B", "C", "D"].includes(key)) {
+      const btn = document.querySelector(`.option[data-key="${key}"]`);
+      if (btn && !btn.disabled) {
+        e.preventDefault();
+        btn.click();
+      }
+      return;
+    }
+    if (key === "ENTER" && state.locked) {
+      e.preventDefault();
+      nextQuestion();
+    }
+    return;
+  }
+
+  if (document.getElementById("result") && !document.getElementById("result").hidden) {
+    if (key === "ENTER") {
+      e.preventDefault();
+      retry();
+    }
+  }
+}
+
 function retry() {
   document.getElementById("result").hidden = true;
   document.getElementById("quiz").hidden = true;
@@ -160,6 +196,7 @@ function retry() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   spawnStars();
+  document.addEventListener("keydown", onKey);
   document.getElementById("btn-start").addEventListener("click", startGame);
   document.getElementById("btn-next").addEventListener("click", nextQuestion);
   document.getElementById("btn-retry").addEventListener("click", retry);
