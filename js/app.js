@@ -1,4 +1,19 @@
 // Lịch Sử Đảng — Đại Hội X | Nhóm 4
+function spawnStars() {
+  const layer = document.getElementById("stars-layer");
+  if (!layer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  for (let i = 0; i < 14; i += 1) {
+    const s = document.createElement("span");
+    s.className = "star";
+    s.textContent = "★";
+    s.style.left = `${Math.random() * 100}%`;
+    s.style.fontSize = `${8 + Math.random() * 12}px`;
+    s.style.animationDuration = `${9 + Math.random() * 14}s`;
+    s.style.animationDelay = `${Math.random() * 12}s`;
+    layer.appendChild(s);
+  }
+}
+
 const state = {
   questions: [],
   index: 0,
@@ -125,6 +140,7 @@ function retry() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  spawnStars();
   document.getElementById("btn-next").addEventListener("click", nextQuestion);
   document.getElementById("btn-retry").addEventListener("click", retry);
   try {
