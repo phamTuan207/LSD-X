@@ -22,9 +22,20 @@ function startGame() {
 
 const pickerState = { names: [], pool: [] };
 
-function loadPickerNames() {
+async function loadPickerNames() {
   const raw = localStorage.getItem("lsd-dhx-names");
-  if (raw) document.getElementById("picker-names").value = raw;
+  if (raw && raw.trim()) {
+    document.getElementById("picker-names").value = raw;
+    return;
+  }
+  try {
+    const res = await fetch("data/names.json");
+    if (!res.ok) return;
+    const names = await res.json();
+    const text = names.join("\n");
+    document.getElementById("picker-names").value = text;
+    localStorage.setItem("lsd-dhx-names", text);
+  } catch { /* keep empty */ }
 }
 
 function savePickerNames() {
