@@ -173,20 +173,6 @@ body::before {
   50% { transform: scale(1.12) rotate(8deg); }
 }
 
-.badge {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--gold), var(--gold-soft));
-  color: #2a1a00;
-  font-weight: 800;
-  font-size: 0.72rem;
-  padding: 0.3rem 0.85rem;
-  border-radius: 999px;
-  margin-bottom: 1rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  box-shadow: 0 4px 16px rgba(232, 185, 35, 0.35);
-}
-
 .header-kicker {
   font-family: var(--font-body);
   font-size: clamp(0.8rem, 2vw, 0.95rem);
@@ -354,29 +340,7 @@ body::before {
   z-index: 50;
 }
 
-/* —— liquid glass hybrid: CSS skin on cards (WebGL only on CTAs) —— */
-.question-card,
-.start-card,
-.result-card,
-.picker-card {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02) 40%, rgba(245, 217, 122, 0.03)),
-    rgba(36, 22, 22, 0.72);
-  backdrop-filter: blur(18px) saturate(1.25);
-  -webkit-backdrop-filter: blur(18px) saturate(1.25);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow:
-    var(--shadow-card),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25);
-}
-
-.option {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  background: rgba(0, 0, 0, 0.28);
-  border-color: rgba(255, 255, 255, 0.1);
-}
+/* cards: solid ceremonial skin (WebGL glass stays on CTAs only) */
 
 .glass-cta {
   z-index: 5;
@@ -384,22 +348,6 @@ body::before {
 
 .glass-cta--secondary {
   margin-top: 0.75rem;
-}
-
-.site-header .badge {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-/* film grain — ThreeUI demo texture, ultra light */
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 40;
-  opacity: 0.045;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* script accent — Dancing Script (vietnamese subset) */
