@@ -110,6 +110,7 @@ LSD-X/
 | GSAP | Chuyển câu, stagger option, feedback |
 | liquid-glass-js (MIT) | CTA “Bắt đầu” / “Gọi tên” (WebGL); card CSS glass hybrid |
 | Canvas confetti | Lá vàng khi đúng câu / điểm ≥75% |
+| ThreeUI Crimson Horizon | Nền WebGL đỏ–vàng chạy full-page — port shader EmeraldHorizon từ [MengTo/threeui](https://github.com/MengTo/threeui) (MIT), recolor ceremonial. File: `js/horizon-bg.js` |
 
 ---
 
