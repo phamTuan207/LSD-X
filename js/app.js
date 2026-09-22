@@ -114,6 +114,7 @@ const state = {
   locked: false,
   score: 0,
   wrongIds: [],
+  animating: false,
 };
 
 function getBank() {
@@ -132,18 +133,33 @@ async function loadQuestions() {
   return res.json();
 }
 
+// unified transition — native scroll feel: wheel down → old slides UP, new enters from BOTTOM
 function animateQuestionIn() {
-  if (typeof gsap === "undefined") return;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  gsap.fromTo(
-    "#question-text",
-    { opacity: 0, y: 18 },
-    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+  if (typeof gsap === "undefined") {
+    state.animating = false;
+    return;
+  }
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    state.animating = false;
+    return;
+  }
+  const tl = gsap.timeline({ onComplete: () => { state.animating = false; } });
+  tl.fromTo(
+    ".question-card",
+    { y: 56, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
   );
-  gsap.fromTo(
+  tl.fromTo(
+    "#question-text",
+    { opacity: 0, y: 12 },
+    { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
+    "-=0.2",
+  );
+  tl.fromTo(
     ".option",
-    { opacity: 0, x: -16 },
-    { opacity: 1, x: 0, duration: 0.35, stagger: 0.06, ease: "power2.out", delay: 0.08 },
+    { opacity: 0, x: -12 },
+    { opacity: 1, x: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" },
+    "-=0.15",
   );
 }
 
@@ -263,13 +279,60 @@ function showResult() {
   document.getElementById("result-detail").textContent = detail;
 }
 
-function nextQuestion() {
-  if (state.index >= state.questions.length - 1) {
-    showResult();
+function advance() {
+  if (state.animating) return;
+  if (!state.locked) return; // only after answered — one gate for button/wheel/Enter
+
+  const go = () => {
+    if (state.index >= state.questions.length - 1) {
+      showResult();
+      state.animating = false;
+      return;
+    }
+    state.index += 1;
+    renderQuestion();
+  };
+
+  if (typeof gsap === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    go();
     return;
   }
-  state.index += 1;
-  renderQuestion();
+
+  state.animating = true;
+  gsap.to(".question-card", {
+    y: -56,
+    opacity: 0,
+    duration: 0.32,
+    ease: "power2.in",
+    onComplete: go,
+  });
+}
+
+// wheel / trackpad: down = next, only when answered, debounced by state.animating
+function onWheel(e) {
+  const quiz = document.getElementById("quiz");
+  if (!quiz || quiz.hidden) return;
+  if (e.deltaY < 24) return;
+  e.preventDefault();
+  advance();
+}
+
+// touch: finger swipe UP = next (matches native scroll-down)
+function initSwipe() {
+  let y0 = null;
+  document.addEventListener("touchstart", (e) => {
+    y0 = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener("touchend", (e) => {
+    if (y0 == null) return;
+    const dy = e.changedTouches[0].clientY - y0;
+    y0 = null;
+    if (dy < -80) advance();
+  }, { passive: true });
+}
+
+function nextQuestion() {
+  advance();
 }
 
 function onKey(e) {
@@ -295,7 +358,7 @@ function onKey(e) {
     }
     if (key === "ENTER" && state.locked) {
       e.preventDefault();
-      nextQuestion();
+      advance();
     }
     return;
   }
@@ -319,6 +382,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   spawnStars();
   loadPickerNames();
   document.addEventListener("keydown", onKey);
+  document.addEventListener("wheel", onWheel, { passive: false });
+  initSwipe();
   document.getElementById("btn-toggle-picker").addEventListener("click", showPicker);
   document.getElementById("btn-picker-back").addEventListener("click", hidePicker);
   document.getElementById("btn-pick").addEventListener("click", pickName);
