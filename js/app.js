@@ -15,7 +15,6 @@ function startGame() {
   state.index = 0;
   state.score = 0;
   state.wrongIds = [];
-  stopTimer();
   document.getElementById("start").hidden = true;
   document.getElementById("result").hidden = true;
   renderQuestion();
@@ -36,16 +35,12 @@ function spawnStars() {
   }
 }
 
-const QUIZ_SECONDS = 20;
-
 const state = {
   questions: [],
   index: 0,
   locked: false,
   score: 0,
   wrongIds: [],
-  timeLeft: QUIZ_SECONDS,
-  timerId: null,
 };
 
 function getBank() {
@@ -89,61 +84,6 @@ function animateFeedbackIn() {
   );
 }
 
-function stopTimer() {
-  if (state.timerId) {
-    clearInterval(state.timerId);
-    state.timerId = null;
-  }
-}
-
-function renderTimer() {
-  const el = document.getElementById("quiz-timer");
-  el.textContent = state.timeLeft;
-  el.classList.toggle("is-low", state.timeLeft <= 5 && state.timeLeft > 0);
-}
-
-function startTimer() {
-  stopTimer();
-  state.timeLeft = QUIZ_SECONDS;
-  renderTimer();
-  document.getElementById("quiz-timer").classList.remove("is-done");
-  state.timerId = setInterval(() => {
-    state.timeLeft -= 1;
-    renderTimer();
-    if (state.timeLeft <= 0) {
-      stopTimer();
-      onTimeout();
-    }
-  }, 1000);
-}
-
-function onTimeout() {
-  if (state.locked) return;
-  state.locked = true;
-  const q = state.questions[state.index];
-  state.wrongIds.push(q.id);
-  document.getElementById("quiz-timer").classList.add("is-done");
-
-  for (const el of document.querySelectorAll(".option")) {
-    el.disabled = true;
-    if (el.dataset.key === q.answer) el.classList.add("is-correct");
-  }
-
-  const verdict = document.getElementById("feedback-verdict");
-  verdict.textContent = `Het gio! Dap an dung la ${q.answer}`;
-  verdict.className = "feedback-verdict bad";
-  document.getElementById("feedback-explain").textContent = q.explanation || "";
-  document.getElementById("feedback-source").textContent = q.source
-    ? `Van kien: ${q.source}`
-    : "";
-  document.getElementById("feedback").hidden = false;
-  animateFeedbackIn();
-
-  const nextBtn = document.getElementById("btn-next");
-  const isLast = state.index >= state.questions.length - 1;
-  nextBtn.textContent = isLast ? "Xem ket qua →" : "Cau tiep theo →";
-}
-
 function renderQuestion() {
   const q = state.questions[state.index];
   if (!q) return;
@@ -175,13 +115,11 @@ function renderQuestion() {
   document.getElementById("result").hidden = true;
   document.getElementById("quiz").hidden = false;
   animateQuestionIn();
-  startTimer();
 }
 
 function onPick(key, btn) {
   if (state.locked) return;
   state.locked = true;
-  stopTimer();
 
   const q = state.questions[state.index];
   const correct = key === q.answer;
@@ -213,7 +151,6 @@ function onPick(key, btn) {
 }
 
 function showResult() {
-  stopTimer();
   const total = state.questions.length;
   const pct = Math.round((state.score / total) * 100);
 

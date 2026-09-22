@@ -351,45 +351,6 @@ body::before {
   font-weight: 600;
 }
 
-.quiz-meta-right {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.quiz-timer {
-  min-width: 2.25rem;
-  height: 2.25rem;
-  display: grid;
-  place-items: center;
-  border-radius: 999px;
-  border: 2px solid var(--gold-dim);
-  background: rgba(0, 0, 0, 0.3);
-  font-weight: 800;
-  font-size: 0.9rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--gold-soft);
-  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.quiz-timer.is-low {
-  border-color: var(--bad);
-  color: var(--bad);
-  animation: timer-tick 1s linear infinite;
-}
-
-.quiz-timer.is-done {
-  border-color: var(--bad);
-  color: var(--bad);
-  transform: scale(1.1);
-  animation: none;
-}
-
-@keyframes timer-tick {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-}
-
 .progress-bar {
   height: 5px;
   background: rgba(245, 217, 122, 0.12);
