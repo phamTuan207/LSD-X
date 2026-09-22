@@ -342,7 +342,6 @@ function onPick(key, btn) {
   verdict.textContent = correct
     ? "Chính xác!"
     : `Sai rồi — đáp án đúng là ${q.answer}`;
-    : `Sai roi, dap an dung la ${q.answer}`;
   verdict.className = `feedback-verdict ${correct ? "ok" : "bad"}`;
 
   document.getElementById("feedback-explain").textContent = q.explanation || "";
@@ -351,6 +350,12 @@ function onPick(key, btn) {
     : "";
   document.getElementById("feedback").hidden = false;
   animateFeedbackIn();
+  requestAnimationFrame(() => {
+    document.getElementById("feedback").scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+  });
 
   const nextBtn = document.getElementById("btn-next");
   const isLast = state.index >= state.questions.length - 1;
