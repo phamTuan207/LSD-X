@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý câu hỏi — Đại Hội X | Nhóm 4</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <span class="badge">Nhóm 4 · Quản lý</span>
+      <h1>Thêm / sửa câu hỏi</h1>
+      <p class="subtitle">Dữ liệu lưu trên trình duyệt — xuất file JSON khi xong</p>
+    </div>
+  </header>
+
+  <main class="container admin">
+    <nav class="admin-nav">
+      <a href="index.html">← Về trò chơi</a>
+      <span id="count-badge" class="quiz-progress"></span>
+    </nav>
+
+    <form id="q-form" class="question-card admin-form">
+      <h2 class="form-title">Câu hỏi mới</h2>
+      <input type="hidden" id="q-id">
+
+      <label class="field">
+        <span>Mục / phần</span>
+        <input type="text" id="q-section" placeholder="VD: TRONG DAI HOI X" required>
+      </label>
+
+      <label class="field">
+        <span>Nội dung câu hỏi</span>
+        <textarea id="q-question" rows="3" placeholder="Nhap noi dung cau hoi..." required></textarea>
+      </label>
+
+      <div class="field-grid">
+        <label class="field">
+          <span>Đáp án A</span>
+          <textarea id="q-a" rows="2" required></textarea>
+        </label>
+        <label class="field">
+          <span>Đáp án B</span>
+          <textarea id="q-b" rows="2" required></textarea>
+        </label>
+        <label class="field">
+          <span>Đáp án C</span>
+          <textarea id="q-c" rows="2" required></textarea>
+        </label>
+        <label class="field">
+          <span>Đáp án D</span>
+          <textarea id="q-d" rows="2" required></textarea>
+        </label>
+      </div>
+
+      <div class="field-grid field-grid--small">
+        <label class="field">
+          <span>Đáp án đúng</span>
+          <select id="q-answer" required>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Văn kiện (tuỳ chọn)</span>
+          <input type="text" id="q-source" placeholder="VD: Bao cao Chinh tri">
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Lý giải (tuỳ chọn)</span>
+        <textarea id="q-explanation" rows="2" placeholder="Giai thich vi sao dap an dung..."></textarea>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-next" id="btn-save">Lưu câu hỏi</button>
+        <button type="button" class="btn-ghost" id="btn-reset" hidden>Huỷ sửa</button>
+      </div>
+      <p id="form-msg" class="form-msg" hidden></p>
+    </form>
+
+    <section class="question-card list-card">
+      <h2 class="form-title">Danh sách câu hỏi</h2>
+      <div id="q-list" class="q-list"></div>
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" id="btn-export">Xuất JSON</button>
+        <label class="btn-ghost btn-file">
+          Nhập JSON
+          <input type="file" id="import-file" accept="application/json,.json" hidden>
+        </label>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Lịch Sử Đảng Cộng sản Việt Nam · Nhóm 4 · Chạy trên localhost</p>
+    <p class="credits">
+      Phạm Tuấn Huy · Nguyễn Vũ Đức Thịnh · Hà Đức Long · Trần Hoàng Anh · Phùng Thiệu Quang
+    </p>
+  </footer>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

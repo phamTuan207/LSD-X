@@ -7,7 +7,17 @@ const state = {
   wrongIds: [],
 };
 
+function getBank() {
+  const raw = localStorage.getItem("lsd-dhx-questions");
+  if (raw) {
+    try { return JSON.parse(raw); } catch { /* ignore */ }
+  }
+  return null;
+}
+
 async function loadQuestions() {
+  const local = getBank();
+  if (local && local.length) return local;
   const res = await fetch("data/questions.json");
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
