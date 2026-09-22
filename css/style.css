@@ -257,6 +257,76 @@ body::before {
   background: rgba(36, 22, 22, 0.4);
 }
 
+/* —— start screen —— */
+.start-card {
+  background:
+    linear-gradient(160deg, rgba(245, 217, 122, 0.06), transparent 50%),
+    var(--bg-card);
+  border: 1px solid rgba(245, 217, 122, 0.28);
+  border-radius: 20px;
+  padding: clamp(2rem, 6vw, 3rem);
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  animation: rise-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.start-kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.start-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.start-title em {
+  font-style: italic;
+  color: var(--gold-soft);
+}
+
+.start-desc {
+  color: var(--text-dim);
+  line-height: 1.6;
+  max-width: 34em;
+  margin: 0 auto 1.5rem;
+}
+
+.start-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  user-select: none;
+}
+
+.start-toggle input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+.btn-start {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 0.95rem 2.4rem;
+  font-size: 1.05rem;
+}
+
 /* —— quiz —— */
 .quiz-meta {
   display: flex;

@@ -1,4 +1,24 @@
 // Lịch Sử Đảng — Đại Hội X | Nhóm 4
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startGame() {
+  const wantShuffle = document.getElementById("opt-shuffle").checked;
+  if (wantShuffle) state.questions = shuffle(state.questions);
+  state.index = 0;
+  state.score = 0;
+  state.wrongIds = [];
+  document.getElementById("start").hidden = true;
+  document.getElementById("result").hidden = true;
+  renderQuestion();
+}
+
 function spawnStars() {
   const layer = document.getElementById("stars-layer");
   if (!layer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -133,19 +153,20 @@ function nextQuestion() {
 }
 
 function retry() {
-  state.index = 0;
-  state.score = 0;
-  state.wrongIds = [];
-  renderQuestion();
+  document.getElementById("result").hidden = true;
+  document.getElementById("quiz").hidden = true;
+  document.getElementById("start").hidden = false;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   spawnStars();
+  document.getElementById("btn-start").addEventListener("click", startGame);
   document.getElementById("btn-next").addEventListener("click", nextQuestion);
   document.getElementById("btn-retry").addEventListener("click", retry);
   try {
     state.questions = await loadQuestions();
-    renderQuestion();
+    document.getElementById("loading").hidden = true;
+    document.getElementById("start").hidden = false;
   } catch (err) {
     document.getElementById("loading").textContent =
       `Khong tai duoc cau hoi: ${err.message}`;

@@ -27,6 +27,24 @@
   </header>
 
   <main id="app" class="container">
+    <section id="start" class="start">
+      <div class="start-card">
+        <p class="start-kicker">Trò chơi học tập</p>
+        <h2 class="start-title">Sẵn sàng bước vào <em>Đại hội X</em>?</h2>
+        <p class="start-desc">
+          30 câu trắc nghiệm về Đại hội đại biểu toàn quốc lần thứ X của Đảng.
+          Trả lời, xem lý giải, chấm điểm cuối trận.
+        </p>
+        <label class="start-toggle">
+          <input type="checkbox" id="opt-shuffle">
+          <span>Xáo trộn thứ tự câu hỏi</span>
+        </label>
+        <button id="btn-start" type="button" class="btn-next btn-start">
+          Bắt đầu →
+        </button>
+      </div>
+    </section>
+
     <section id="quiz" class="quiz" hidden>
       <div class="quiz-meta">
         <span id="quiz-section" class="quiz-section"></span>
@@ -53,7 +71,7 @@
         <p id="result-score" class="result-score"></p>
         <p id="result-msg" class="result-msg"></p>
         <p id="result-detail" class="result-detail"></p>
-        <button id="btn-retry" type="button" class="btn-next">Chơi lại ↺</button>
+        <button id="btn-retry" type="button" class="btn-next">Choi lai ↺</button>
       </div>
     </section>
 
