@@ -196,8 +196,17 @@ function onPick(key, btn) {
 
   const q = state.questions[state.index];
   const correct = key === q.answer;
-  if (correct) state.score += 1;
-  else state.wrongIds.push(q.id);
+  if (correct) {
+    state.score += 1;
+    // subtle gold-leaf: center card, restrained count
+    const card = document.querySelector(".question-card");
+    const rect = card ? card.getBoundingClientRect() : null;
+    const cx = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+    const cy = rect ? rect.top + rect.height * 0.3 : window.innerHeight * 0.35;
+    confetti.burst(cx, cy, 36);
+  } else {
+    state.wrongIds.push(q.id);
+  }
 
   for (const el of document.querySelectorAll(".option")) {
     el.disabled = true;
@@ -231,6 +240,16 @@ function showResult() {
   document.getElementById("result").hidden = false;
   document.getElementById("result-score").textContent =
     `${state.score}/${total}`;
+
+  if (pct >= 75) {
+    // gentle gold rain across top, staggered — not fireworks
+    for (let i = 0; i < 5; i += 1) {
+      setTimeout(
+        () => confetti.burst(window.innerWidth * (0.15 + i * 0.175), 40, 20),
+        i * 160,
+      );
+    }
+  }
 
   let msg = "Cung co co day, tap them nua!";
   if (pct >= 90) msg = "Xuat sac! Dang cap nha lich su!";
