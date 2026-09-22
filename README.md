@@ -6,7 +6,7 @@ Chạy trên **localhost**, không cần backend, không cần cài gì phức t
 
 ---
 
-## Chạy nhanh (cho bạn cùng lớp)
+## Chạy nhanh tại lớp
 
 Clone repo rồi mở terminal trong thư mục dự án:
 
@@ -24,11 +24,12 @@ Mở trình duyệt vào **http://localhost:8000**
 
 ---
 
-## Dành cho người dùng (không biết code)
+## Dành cho người dùng (end-user)
 
 ### Chạy game
 
 1. Clone hoặc tải repo này về máy.
+
 2. Mở terminal trong thư mục dự án, chạy:
 
    ```bash
