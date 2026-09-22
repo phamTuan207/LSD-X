@@ -58,6 +58,31 @@ async function loadQuestions() {
   return res.json();
 }
 
+function animateQuestionIn() {
+  if (typeof gsap === "undefined") return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  gsap.fromTo(
+    "#question-text",
+    { opacity: 0, y: 18 },
+    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+  );
+  gsap.fromTo(
+    ".option",
+    { opacity: 0, x: -16 },
+    { opacity: 1, x: 0, duration: 0.35, stagger: 0.06, ease: "power2.out", delay: 0.08 },
+  );
+}
+
+function animateFeedbackIn() {
+  if (typeof gsap === "undefined") return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  gsap.fromTo(
+    "#feedback",
+    { opacity: 0, y: 12 },
+    { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
+  );
+}
+
 function renderQuestion() {
   const q = state.questions[state.index];
   if (!q) return;
@@ -88,6 +113,7 @@ function renderQuestion() {
   document.getElementById("loading").hidden = true;
   document.getElementById("result").hidden = true;
   document.getElementById("quiz").hidden = false;
+  animateQuestionIn();
 }
 
 function onPick(key, btn) {
@@ -116,6 +142,7 @@ function onPick(key, btn) {
     ? `Van kien: ${q.source}`
     : "";
   document.getElementById("feedback").hidden = false;
+  animateFeedbackIn();
 
   const nextBtn = document.getElementById("btn-next");
   const isLast = state.index >= state.questions.length - 1;
