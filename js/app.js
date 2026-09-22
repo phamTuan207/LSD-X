@@ -10,14 +10,32 @@ function shuffle(arr) {
 
 function startGame() {
   const wantShuffle = document.getElementById("opt-shuffle").checked;
+  const section = document.getElementById("opt-section").value;
   const base = getBank() || state.questions;
-  state.questions = wantShuffle ? shuffle(base) : [...base];
+  const pool = section ? base.filter((q) => q.section === section) : base;
+  state.questions = wantShuffle ? shuffle(pool) : [...pool];
+  if (!state.questions.length) return;
   state.index = 0;
   state.score = 0;
   state.wrongIds = [];
   document.getElementById("start").hidden = true;
   document.getElementById("result").hidden = true;
   renderQuestion();
+}
+
+// fill section filter from bank (sections may be edited in admin)
+function fillSectionOptions(questions) {
+  const sel = document.getElementById("opt-section");
+  const current = sel.value;
+  const sections = [...new Set(questions.map((q) => q.section).filter(Boolean))];
+  sel.innerHTML = '<option value="">Tất cả</option>';
+  for (const s of sections) {
+    const o = document.createElement("option");
+    o.value = s;
+    o.textContent = s;
+    sel.appendChild(o);
+  }
+  if (sections.includes(current)) sel.value = current;
 }
 
 const pickerState = { names: [], pool: [] };
@@ -393,6 +411,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("btn-retry").addEventListener("click", retry);
   try {
     state.questions = await loadQuestions();
+    fillSectionOptions(state.questions);
     document.getElementById("loading").hidden = true;
     document.getElementById("start").hidden = false;
   } catch (err) {

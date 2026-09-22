@@ -531,6 +531,28 @@ body::before {
   cursor: pointer;
 }
 
+.start-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.start-select select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface, rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.65rem;
+  max-width: 18rem;
+  cursor: pointer;
+}
+
 .btn-start {
   display: block;
   width: fit-content;
