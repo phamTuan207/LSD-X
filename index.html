@@ -16,8 +16,20 @@
   </header>
 
   <main id="app" class="container">
-    <!-- Feature tiếp sẽ render quiz vào đây -->
-    <p class="placeholder">Ứng dụng đang được xây dựng…</p>
+    <section id="quiz" class="quiz" hidden>
+      <div class="quiz-meta">
+        <span id="quiz-section" class="quiz-section"></span>
+        <span id="quiz-progress" class="quiz-progress"></span>
+      </div>
+      <div class="progress-bar" aria-hidden="true">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <article class="question-card">
+        <h2 id="question-text" class="question-text"></h2>
+        <div id="options" class="options"></div>
+      </article>
+    </section>
+    <p id="loading" class="placeholder">Đang tải câu hỏi…</p>
   </main>
 
   <footer class="site-footer">
