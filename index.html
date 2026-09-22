@@ -42,6 +42,9 @@
         <button id="btn-start" type="button" class="btn-next btn-start">
           Bắt đầu →
         </button>
+        <button id="btn-toggle-picker" type="button" class="btn-ghost picker-open">
+          Gọi tên ngẫu nhiên
+        </button>
       </div>
     </section>
 
@@ -75,6 +78,23 @@
         <p id="result-msg" class="result-msg"></p>
         <p id="result-detail" class="result-detail"></p>
         <button id="btn-retry" type="button" class="btn-next">Choi lai ↺</button>
+      </div>
+    </section>
+
+    <section id="picker" class="picker" hidden>
+      <div class="picker-card">
+        <p class="start-kicker">Gọi tên</p>
+        <p class="picker-label">Danh sách lớp (mỗi tên 1 dòng)</p>
+        <textarea id="picker-names" class="picker-input" rows="5"
+          placeholder="Nguyen Van A&#10;Tran Thi B&#10;..."></textarea>
+        <button id="btn-pick" type="button" class="btn-next">Rút tên →</button>
+        <p id="picker-result" class="picker-result" hidden></p>
+        <p id="picker-hint" class="picker-hint">
+          Tên đã gọi sẽ không lặp lại đến khi hết danh sách.
+        </p>
+        <button id="btn-picker-back" type="button" class="btn-ghost picker-open">
+          ← Quay lại
+        </button>
       </div>
     </section>
 

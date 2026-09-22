@@ -20,6 +20,68 @@ function startGame() {
   renderQuestion();
 }
 
+const pickerState = { names: [], pool: [] };
+
+function loadPickerNames() {
+  const raw = localStorage.getItem("lsd-dhx-names");
+  if (raw) document.getElementById("picker-names").value = raw;
+}
+
+function savePickerNames() {
+  localStorage.setItem(
+    "lsd-dhx-names",
+    document.getElementById("picker-names").value,
+  );
+}
+
+function showPicker() {
+  document.getElementById("start").hidden = true;
+  document.getElementById("quiz").hidden = true;
+  document.getElementById("result").hidden = true;
+  document.getElementById("picker").hidden = false;
+}
+
+function hidePicker() {
+  document.getElementById("picker").hidden = true;
+  document.getElementById("start").hidden = false;
+}
+
+function pickName() {
+  const lines = document
+    .getElementById("picker-names")
+    .value.split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  savePickerNames();
+
+  if (!lines.length) {
+    alert("Nhap danh sach ten truoc");
+    return;
+  }
+
+  const key = lines.join("|");
+  if (pickerState.names.join("|") !== key) {
+    pickerState.names = lines;
+    pickerState.pool = [...lines];
+  }
+
+  if (!pickerState.pool.length) {
+    pickerState.pool = [...lines];
+  }
+
+  const i = Math.floor(Math.random() * pickerState.pool.length);
+  const name = pickerState.pool.splice(i, 1)[0];
+  const left = pickerState.pool.length;
+
+  const el = document.getElementById("picker-result");
+  el.hidden = false;
+  el.textContent = name;
+  document.getElementById("picker-hint").textContent =
+    left > 0
+      ? `Con ${left} ten chua goi.`
+      : "Het danh sach — vong moi bat dau.";
+}
+
 function spawnStars() {
   const layer = document.getElementById("stars-layer");
   if (!layer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -219,12 +281,18 @@ function onKey(e) {
 function retry() {
   document.getElementById("result").hidden = true;
   document.getElementById("quiz").hidden = true;
+  document.getElementById("picker").hidden = true;
   document.getElementById("start").hidden = false;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   spawnStars();
+  loadPickerNames();
   document.addEventListener("keydown", onKey);
+  document.getElementById("btn-toggle-picker").addEventListener("click", showPicker);
+  document.getElementById("btn-picker-back").addEventListener("click", hidePicker);
+  document.getElementById("btn-pick").addEventListener("click", pickName);
+  document.getElementById("picker-names").addEventListener("change", savePickerNames);
   document.getElementById("btn-start").addEventListener("click", startGame);
   document.getElementById("btn-next").addEventListener("click", nextQuestion);
   document.getElementById("btn-retry").addEventListener("click", retry);
