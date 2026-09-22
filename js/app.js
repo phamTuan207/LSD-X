@@ -108,7 +108,7 @@ function pickName() {
   document.getElementById("picker-hint").textContent =
     left > 0
       ? `Con ${left} ten chua goi.`
-      : "Het danh sach — vong moi bat dau.";
+      : "Het danh sach, vong moi bat dau.";
 }
 
 function spawnStars() {
@@ -250,7 +250,7 @@ function onPick(key, btn) {
   const verdict = document.getElementById("feedback-verdict");
   verdict.textContent = correct
     ? "Chính xác!"
-    : `Sai roi — dap an dung la ${q.answer}`;
+    : `Sai roi, dap an dung la ${q.answer}`;
   verdict.className = `feedback-verdict ${correct ? "ok" : "bad"}`;
 
   document.getElementById("feedback-explain").textContent = q.explanation || "";

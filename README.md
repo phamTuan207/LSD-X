@@ -1,8 +1,26 @@
-# Lịch Sử Đảng — Đại Hội X | Nhóm 4
+# Lịch Sử Đảng · Đại Hội X | Nhóm 4
 
 Minigame trắc nghiệm dùng trong lớp: **Đại hội đại biểu toàn quốc lần thứ X của Đảng Cộng sản Việt Nam**.
 
 Chạy hoàn toàn trên **localhost**, không cần backend, không cần cài gì phức tạp.
+
+---
+
+## Chạy nhanh (cho bạn cùng lớp)
+
+Clone repo rồi mở terminal trong thư mục dự án:
+
+```bash
+git clone https://github.com/phamTuan207/LSD-X.git
+cd LSD-X
+python3 -m http.server 8000
+```
+
+Mở trình duyệt vào **http://localhost:8000**
+
+- Không có Python? Dùng extension **Live Server** trong VS Code → mở thư mục → *Go Live*.
+- Port 8000 bị bận? Đổi số: `python3 -m http.server 8080` rồi vào `http://localhost:8080`.
+- Không gõ được lệnh? Mở trực tiếp `index.html` bằng đúp chuột cũng chạy được phần lớn chức năng (khuyến nghị vẫn dùng server để tránh lỗi CORS với file JSON).
 
 ---
 
@@ -16,8 +34,6 @@ Chạy hoàn toàn trên **localhost**, không cần backend, không cần cài 
    ```bash
    python3 -m http.server 8000
    ```
-
-   (Máy chưa có Python có thể dùng extension **Live Server** trong VS Code, bấm *Go Live*.)
 
 3. Mở trình duyệt vào: **http://localhost:8000**
 
@@ -34,7 +50,7 @@ Chạy hoàn toàn trên **localhost**, không cần backend, không cần cài 
 
 - Nút **Gọi tên ngẫu nhiên** ở màn khởi động.
 - Danh sách 35 tên lớp KTPM67B đã có sẵn (file `data/names.json`).
-- Sửa / thêm / bấm tên ngay trong ô textarea — lưu trên trình duyệt (localStorage), không mất khi F5.
+- Sửa / thêm / bấm tên ngay trong ô textarea, lưu trên trình duyệt (localStorage), không mất khi F5.
 - Tên đã gọi không lặp lại cho đến khi hết vòng.
 
 ### Thêm / sửa câu hỏi (không cần sửa code)
@@ -63,11 +79,11 @@ LSD-X/
 │   ├── admin.js            # Form + list + import/export localStorage
 │   ├── confetti.js         # Gold-leaf particles (canvas, zero-dep)
 │   ├── glass-ui.js         # Mount Liquid Glass CTA (fallback nếu no WebGL)
+│   ├── horizon-bg.js       # ThreeUI Crimson Horizon (WebGL nền)
 │   └── vendor/
 │       ├── gsap.min.js
-│       ├── ScrollTrigger.min.js
 │       ├── html2canvas.min.js
-│       └── liquid-glass/    # MIT — container.js, button.js, glass.css
+│       └── liquid-glass/    # MIT: container.js, button.js, glass.css
 ├── data/
 │   ├── questions.json      # Bank 30 câu Đại hội X (seed)
 │   └── names.json          # 35 tên lớp KTPM67B (seed picker)
@@ -77,7 +93,7 @@ LSD-X/
 ### Quy ước
 
 - **Mỗi feature = 1 commit**, message tiếng Việt không dấu, kiểu `them ...`, `bo ...`, `sua ...`.
-- Không thêm build step / framework — vanilla HTML/CSS/JS, mở localhost là chạy.
+- Không thêm build step / framework, vanilla HTML/CSS/JS, mở localhost là chạy.
 - Library chỉ nhận qua vendored file trong `js/vendor/` (không CDN bắt buộc, offline được).
 - `localStorage` keys: `lsd-dhx-questions`, `lsd-dhx-names`.
 - Tôn trọng `prefers-reduced-motion` (confetti, sao rơi, GSAP).
@@ -98,9 +114,9 @@ LSD-X/
 
 ### Thêm feature mới
 
-1. Tách nhỏ — xong 1 tính năng → commit → push.
+1. Tách nhỏ, xong 1 tính năng → commit → push.
 2. UI mới: giữ theme `css/style.css` (biến `--red`, `--gold`, font display/body).
-3. Không đụng timer — mode lớp học, giáo viên tự điều khiển nhịp.
+3. Không đụng timer, mode lớp học, giáo viên tự điều khiển nhịp.
 4. Test nhanh: `node --check js/*.js` rồi mở browser F5.
 
 ### Tech đã gắn
@@ -108,17 +124,16 @@ LSD-X/
 | Thành phần | Vai trò |
 |---|---|
 | GSAP | Chuyển câu, stagger option, feedback |
-| liquid-glass-js (MIT) | CTA “Bắt đầu” / “Gọi tên” (WebGL); card CSS glass hybrid |
+| liquid-glass-js (MIT) | CTA “Bắt đầu” / “Gọi tên” (WebGL trên nút chính) |
 | Canvas confetti | Lá vàng khi đúng câu / điểm ≥75% |
-| ThreeUI Crimson Horizon | Nền WebGL đỏ–vàng chạy full-page — port shader EmeraldHorizon từ [MengTo/threeui](https://github.com/MengTo/threeui) (MIT), recolor ceremonial. File: `js/horizon-bg.js` |
-| ThreeUI Gradient Beam | Viền xoay quanh nút chính khi hover — port từ source `gradient-beam-cta` / `spinning-border-button` |
+| ThreeUI Crimson Horizon | Nền WebGL đỏ–vàng full-page, port shader EmeraldHorizon từ [MengTo/threeui](https://github.com/MengTo/threeui) (MIT), recolor ceremonial. File: `js/horizon-bg.js` |
+| ThreeUI Gradient Beam | Viền xoay quanh nút chính khi hover, port từ source `gradient-beam-cta` / `spinning-border-button` |
 | Dancing Script | Font viết tay uốn lượn (subset vi) làm điểm nhấn: tên rút thưởng, câu nhận xét, chữ *X* trong tiêu đề |
-| Film grain | Lớp noise SVG siêu nhẹ (`grain-overlay`) — texture kiểu ThreeUI demo |
 
 ---
 
-## Nhóm 4 — Lịch Sử Đảng
+## Nhóm 4 · Lịch Sử Đảng
 
 Phạm Tuấn Huy · Nguyễn Vũ Đức Thịnh · Hà Đức Long · Trần Hoàng Anh · Phùng Thiệu Quang
 
-Chủ đề: **Đại hội X** — KTPM67B.
+Chủ đề: **Đại hội X** · KTPM67B.
