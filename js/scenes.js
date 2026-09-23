@@ -62,6 +62,7 @@
       glow: "rgba(255,170,190,0.24)", glowAngle: "-7deg",
       pattern: "mist", particles: "petals", tint: [255, 190, 205],
       emblem: "lotus", emblemTint: "#f6c9d4",
+      water: true,
       horizon: { base: [0.02, 0.05, 0.05], a: [0.10, 0.42, 0.40], b: [1.0, 0.70, 0.72], intensity: 0.62, y: 0.05 },
     },
     {
@@ -130,6 +131,7 @@
     }
     if (window.emblem && window.emblem.setScene) window.emblem.setScene(idx);
     restartParticles(scene.particles, scene.tint, instant);
+    if (!scene.water) ripples = [];
   }
 
   // —— hạt theo cảnh ——
@@ -138,6 +140,52 @@
   let tint = [255, 225, 170];
   let raf = 0;
   let dpr = 1;
+
+  // —— hồ nước: gợn lan theo con trỏ (chỉ cảnh có nước) ——
+  let ripples = [];
+  let lastRX = 0;
+  let lastRY = 0;
+
+  function spawnRipple(x, y, strength) {
+    ripples.push({
+      x,
+      y,
+      r: 3 + strength * 2,
+      max: 46 + strength * 58,
+      a: 0.3 * strength,
+      w: 1 + strength * 0.7,
+    });
+    if (ripples.length > 20) ripples.shift();
+  }
+
+  function stepRipples(dt) {
+    if (!ripples.length) return;
+    for (const rp of ripples) {
+      rp.r += (22 + (rp.max - rp.r) * 2.6) * dt;
+      rp.a -= dt * 0.34;
+    }
+    ripples = ripples.filter((rp) => rp.a > 0.005 && rp.r < rp.max);
+  }
+
+  function drawRipples() {
+    for (const rp of ripples) {
+      const ry = rp.r * 0.34;
+      // vòng nước bắt sáng ở phía trên, chìm dần xuống dưới → đọc ra mặt nước
+      const grad = ctx.createLinearGradient(rp.x, rp.y - ry, rp.x, rp.y + ry);
+      grad.addColorStop(0, `rgba(233, 250, 245, ${rp.a})`);
+      grad.addColorStop(0.55, `rgba(208, 238, 232, ${rp.a * 0.42})`);
+      grad.addColorStop(1, `rgba(186, 224, 218, ${rp.a * 0.12})`);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = rp.w;
+      ctx.beginPath();
+      ctx.ellipse(rp.x, rp.y, rp.r, ry, 0, 0, 6.283);
+      ctx.stroke();
+    }
+  }
+
+  function isWater() {
+    return !!(SCENES[current] && SCENES[current].water);
+  }
 
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -208,6 +256,12 @@
     last = now;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // mặt hồ trước, rồi hạt rơi lên trên
+    if (isWater()) {
+      stepRipples(dt);
+      drawRipples();
+    }
 
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -295,6 +349,65 @@
       set(current, { instant: true });
     });
   }
+
+  // —— cả nền trôi nhẹ theo con trỏ (1 transform trên cả stack, rất rẻ) ——
+  let driftRaf = 0;
+  let driftX = 0;
+  let driftY = 0;
+
+  function applyDrift() {
+    driftRaf = 0;
+    stack.style.setProperty("--sx", `${driftX.toFixed(1)}px`);
+    stack.style.setProperty("--sy", `${driftY.toFixed(1)}px`);
+  }
+
+  function onScenePointer(e) {
+    if (e.pointerType === "touch" || reduceQuery.matches) return;
+    driftX = ((e.clientX / window.innerWidth) * 2 - 1) * 14;
+    driftY = ((e.clientY / window.innerHeight) * 2 - 1) * 10;
+    if (!driftRaf) driftRaf = requestAnimationFrame(applyDrift);
+
+    // con trỏ lướt trên mặt nước → gợn lan ra
+    if (isWater()) {
+      if (lastRX === 0 && lastRY === 0) {
+        lastRX = e.clientX;
+        lastRY = e.clientY;
+        return;
+      }
+      const dx = e.clientX - lastRX;
+      const dy = e.clientY - lastRY;
+      const d2 = dx * dx + dy * dy;
+      if (d2 > 480) {
+        spawnRipple(e.clientX, e.clientY, 1);
+        // vuốt nhanh → thêm vệt nước phía sau cho liền mạch
+        if (d2 > 3600) {
+          spawnRipple(
+            e.clientX - dx * 0.45 + rand(-4, 4),
+            e.clientY - dy * 0.45 + rand(-4, 4),
+            0.6,
+          );
+        }
+        lastRX = e.clientX;
+        lastRY = e.clientY;
+      }
+    }
+  }
+
+  function onSceneDown(e) {
+    if (e.pointerType === "touch" || reduceQuery.matches || !isWater()) return;
+    spawnRipple(e.clientX, e.clientY, 1.9);
+    setTimeout(() => spawnRipple(e.clientX, e.clientY, 1.2), 140);
+  }
+
+  function resetDrift() {
+    driftX = 0;
+    driftY = 0;
+    if (!driftRaf) driftRaf = requestAnimationFrame(applyDrift);
+  }
+
+  window.addEventListener("pointermove", onScenePointer, { passive: true });
+  window.addEventListener("pointerdown", onSceneDown, { passive: true });
+  document.addEventListener("mouseleave", resetDrift);
 
   resize();
 

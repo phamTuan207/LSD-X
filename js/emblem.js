@@ -131,37 +131,59 @@
   // direction: 1 = câu kế (trượt từ phải sang), -1 = câu trước
   function nudge(direction) {
     if (!hasGsap() || reduceQuery.matches) return;
-    const g = window.gsap;
-    g.fromTo(
+    window.gsap.fromTo(
       stage,
-      { x: 120 * direction, opacity: 0.25 },
-      { x: 0, opacity: 1, duration: 0.75, ease: "power3.out", overwrite: "auto" },
+      { x: 120 * direction, opacity: 0.25, scale: 0.96 },
+      { x: 0, opacity: 1, scale: 1, duration: 0.8, ease: "expo.out", overwrite: "auto" },
     );
-    g.fromTo(parallax, { rotateY: 8 * direction }, { rotateY: 0, duration: 0.9, ease: "power3.out", overwrite: "auto" });
   }
 
-  // —— parallax theo con trỏ (chỉ khi có hover + motion cho phép) ——
-  const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+  // —— parallax theo con trỏ ——
+  // Gắn luôn listener rồi tự bỏ qua sự kiện touch, thay vì phụ thuộc
+  // media query (hover/pointer) vốn sai trên vài thiết bị.
   let qx = null;
   let qy = null;
+  let qpx = null;
+  let qpy = null;
+
   function onPointer(e) {
-    if (!qx || !qy) return;
+    if (e.pointerType === "touch") return;
+    if (!qx || !qpx) return;
     const nx = (e.clientX / window.innerWidth) * 2 - 1;
     const ny = (e.clientY / window.innerHeight) * 2 - 1;
-    qx(nx * -7);
-    qy(ny * 5);
+    qx(nx * -9);
+    qy(ny * 6);
+    qpx(nx * 16);
+    qpy(ny * 12);
   }
+
+  function resetPointer() {
+    if (!qpx) return;
+    qx(0);
+    qy(0);
+    qpx(0);
+    qpy(0);
+  }
+
   function enableParallax() {
-    if (!hasGsap() || reduceQuery.matches || !fine.matches) return;
-    qx = window.gsap.quickTo(parallax, "rotationY", { duration: 0.9, ease: "power3.out" });
-    qy = window.gsap.quickTo(parallax, "rotationX", { duration: 0.9, ease: "power3.out" });
+    if (!hasGsap() || reduceQuery.matches) return;
+    const g = window.gsap;
+    qx = g.quickTo(parallax, "rotationY", { duration: 0.9, ease: "power3.out" });
+    qy = g.quickTo(parallax, "rotationX", { duration: 0.9, ease: "power3.out" });
+    qpx = g.quickTo(parallax, "x", { duration: 1, ease: "power3.out" });
+    qpy = g.quickTo(parallax, "y", { duration: 1, ease: "power3.out" });
     window.addEventListener("pointermove", onPointer, { passive: true });
+    document.addEventListener("mouseleave", resetPointer);
   }
+
   function disableParallax() {
     window.removeEventListener("pointermove", onPointer);
+    document.removeEventListener("mouseleave", resetPointer);
     qx = null;
     qy = null;
-    if (hasGsap()) window.gsap.set(parallax, { rotationX: 0, rotationY: 0 });
+    qpx = null;
+    qpy = null;
+    if (hasGsap()) window.gsap.set(parallax, { rotationX: 0, rotationY: 0, x: 0, y: 0 });
   }
 
   build("star");

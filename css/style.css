@@ -132,6 +132,9 @@ select { caret-color: var(--accent); }
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  /* trôi nhẹ theo con trỏ; scale để không hở mép khi dịch */
+  transform: translate3d(var(--sx, 0px), var(--sy, 0px), 0) scale(1.04);
+  transition: transform 0.7s var(--ease-out);
 }
 
 .scene {
@@ -278,7 +281,8 @@ select { caret-color: var(--accent); }
 
 .header-inner { position: relative; z-index: 2; max-width: 820px; margin: 0 auto; }
 
-/* waving flag corner — crimson wash on glass, không phải slab đặc */
+/* lá cờ góc phải — rìa vải gợn sóng; --flag-amp do js/flag.js đẩy lên khi
+   con trỏ lướt qua nên sóng mạnh lên rồi tự dịu */
 .flag-wave {
   position: absolute;
   top: 0;
@@ -286,10 +290,25 @@ select { caret-color: var(--accent); }
   width: min(34vw, 200px);
   height: min(24vw, 128px);
   background: linear-gradient(135deg, rgba(220, 38, 38, 0.5), rgba(127, 29, 29, 0.05));
-  clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 0);
-  animation: flag-sway 4.5s ease-in-out infinite;
+  clip-path: polygon(18% 0, 100% 0, 100% 100%,
+    calc(72% + var(--flag-amp, 1) * 2.6%) calc(72% - var(--flag-amp, 1) * 2.6%),
+    calc(45% - var(--flag-amp, 1) * 2.6%) calc(45% + var(--flag-amp, 1) * 2.6%));
+  animation: flag-ripple 5.5s ease-in-out infinite, flag-sway 4.5s ease-in-out infinite;
   transform-origin: top right;
   z-index: 1;
+}
+
+@keyframes flag-ripple {
+  0%, 100% {
+    clip-path: polygon(18% 0, 100% 0, 100% 100%,
+      calc(72% + var(--flag-amp, 1) * 2.6%) calc(72% - var(--flag-amp, 1) * 2.6%),
+      calc(45% - var(--flag-amp, 1) * 2.6%) calc(45% + var(--flag-amp, 1) * 2.6%));
+  }
+  50% {
+    clip-path: polygon(18% 0, 100% 0, 100% 100%,
+      calc(72% - var(--flag-amp, 1) * 2.6%) calc(72% + var(--flag-amp, 1) * 2.6%),
+      calc(45% + var(--flag-amp, 1) * 2.6%) calc(45% - var(--flag-amp, 1) * 2.6%));
+  }
 }
 
 .flag-star {
@@ -1411,8 +1430,9 @@ body.wheel-open { overflow: hidden; }
   .flag-wave,
   .flag-star,
   .btn-next::before { animation: none; }
-  /* cảnh đổi tức thì, không push-in, không hạt chuyển động */
+  /* cảnh đổi tức thì, không push-in, không hạt chuyển động, không trôi theo chuột */
   .scene { transition: none; transform: none; }
+  .scene-stack { transform: none; transition: none; }
   .emblem { opacity: 0.8; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
