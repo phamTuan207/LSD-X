@@ -410,6 +410,7 @@
   document.addEventListener("mouseleave", resetDrift);
 
   resize();
+  set(0, { instant: true }); // màn khởi động cũng có cảnh, không chỉ horizon
 
   window.scenes = {
     set,
