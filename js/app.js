@@ -18,6 +18,8 @@ function startGame() {
   state.index = 0;
   state.score = 0;
   state.wrongIds = [];
+  state.answers = {};
+  state.direction = 1;
   state.teams = readTeams();
   state.activeTeam = state.teams.length ? null : 0;
   document.getElementById("start").hidden = true;
@@ -77,29 +79,40 @@ function hidePicker() {
   document.getElementById("start").hidden = false;
 }
 
-function pickName() {
-  const lines = document
+function toggleOptions() {
+  const panel = document.getElementById("start-options");
+  const btn = document.getElementById("btn-options");
+  const open = panel.hidden;
+  panel.hidden = !open;
+  btn.setAttribute("aria-expanded", String(open));
+}
+
+function nameLines() {
+  return document
     .getElementById("picker-names")
     .value.split("\n")
     .map((s) => s.trim())
     .filter(Boolean);
-  savePickerNames();
+}
 
-  if (!lines.length) {
+// pool "tên chưa gọi" dùng chung cho cả Rút tên lẫn Vòng quay
+function syncPickerPool(lines) {
+  if (pickerState.names.join("|") !== lines.join("|")) {
+    pickerState.names = lines;
+    pickerState.pool = [...lines];
+  }
+  if (!pickerState.pool.length) pickerState.pool = [...lines];
+}
+
+function pickName() {
+  savePickerNames();
+  if (!nameLines().length) {
     alert("Nhập danh sách tên trước");
     return;
   }
 
-  const key = lines.join("|");
-  if (pickerState.names.join("|") !== key) {
-    pickerState.names = lines;
-    pickerState.pool = [...lines];
-  }
-
-  if (!pickerState.pool.length) {
-    pickerState.pool = [...lines];
-  }
-
+  const lines = nameLines();
+  syncPickerPool(lines);
   const i = Math.floor(Math.random() * pickerState.pool.length);
   const name = pickerState.pool.splice(i, 1)[0];
   const left = pickerState.pool.length;
@@ -113,20 +126,20 @@ function pickName() {
       : "Hết danh sách, vòng mới bắt đầu.";
 }
 
-function spawnStars() {
-  const layer = document.getElementById("stars-layer");
-  if (!layer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  for (let i = 0; i < 14; i += 1) {
-    const s = document.createElement("span");
-    s.className = "star";
-    s.textContent = "★";
-    s.style.left = `${Math.random() * 100}%`;
-    s.style.fontSize = `${8 + Math.random() * 12}px`;
-    s.style.animationDuration = `${9 + Math.random() * 14}s`;
-    s.style.animationDelay = `${Math.random() * 12}s`;
-    layer.appendChild(s);
-  }
-}
+// cầu nối cho js/wheel.js
+window.callNames = {
+  all: () => nameLines(),
+  pool() {
+    const lines = nameLines();
+    if (!lines.length) return [];
+    syncPickerPool(lines);
+    return pickerState.pool.slice();
+  },
+  take(name) {
+    pickerState.pool = pickerState.pool.filter((n) => n !== name);
+  },
+  left: () => pickerState.pool.length,
+};
 
 const state = {
   questions: [],
@@ -134,6 +147,8 @@ const state = {
   locked: false,
   score: 0,
   wrongIds: [],
+  answers: {},
+  direction: 1,
   animating: false,
   teams: [],
   activeTeam: 0,
@@ -224,8 +239,8 @@ async function loadQuestions() {
   return res.json();
 }
 
-// unified transition — native scroll feel: wheel down → old slides UP, new enters from BOTTOM
-function animateQuestionIn() {
+// slide ngang theo hướng: câu kế trượt vào từ phải, lùi về thì từ trái
+function animateQuestionIn(direction) {
   if (typeof gsap === "undefined") {
     state.animating = false;
     return;
@@ -234,22 +249,24 @@ function animateQuestionIn() {
     state.animating = false;
     return;
   }
+  const d = direction >= 0 ? 1 : -1;
   const tl = gsap.timeline({ onComplete: () => { state.animating = false; } });
   tl.fromTo(
     ".question-card",
-    { y: -40, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" },
+    { x: 96 * d, opacity: 0, scale: 0.985 },
+    { x: 0, opacity: 1, scale: 1, duration: 0.62, ease: "expo.out" },
   );
   tl.fromTo(
     "#question-text",
-    { opacity: 0, y: 16 },
-    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
-    "-=0.15",
+    { x: 34 * d, opacity: 0 },
+    { x: 0, opacity: 1, duration: 0.5, ease: "expo.out" },
+    "-=0.46",
   );
   tl.fromTo(
     ".option",
-    { opacity: 0, y: 14 },
-    { opacity: 1, y: 0, duration: 0.35, stagger: 0.07, ease: "power2.out", delay: 0.05 },
+    { x: 46 * d, opacity: 0, scale: 0.99 },
+    { x: 0, opacity: 1, scale: 1, duration: 0.46, stagger: 0.06, ease: "expo.out" },
+    "-=0.4",
   );
 }
 
@@ -263,12 +280,17 @@ function animateFeedbackIn() {
   );
 }
 
-function renderQuestion() {
+function renderQuestion(direction = 1) {
   const q = state.questions[state.index];
   if (!q) return;
+  state.direction = direction >= 0 ? 1 : -1;
   state.locked = false;
   state.answerSnapshot = null;
   if (state.teams.length) state.activeTeam = null;
+
+  // cảnh nền: 3 câu một cảnh → 30 câu = 10 cảnh
+  if (window.scenes) window.scenes.set(Math.floor(state.index / 3));
+  if (window.emblem) window.emblem.nudge(state.direction);
 
   document.getElementById("quiz-section").textContent = q.section;
   document.getElementById("quiz-progress").textContent =
@@ -296,10 +318,55 @@ function renderQuestion() {
     optionsEl.appendChild(btn);
   }
 
+  const prevBtn = document.getElementById("btn-prev");
+  if (prevBtn) prevBtn.hidden = state.index === 0;
+
   document.getElementById("loading").hidden = true;
   document.getElementById("result").hidden = true;
   document.getElementById("quiz").hidden = false;
-  animateQuestionIn();
+
+  // câu đã trả lời rồi (khi lùi về) → hiện lại đúng trạng thái, không cộng điểm lại
+  const answered = state.answers[state.index];
+  if (answered) {
+    state.animating = false;
+    revealAnswer(answered);
+  } else {
+    animateQuestionIn(state.direction);
+  }
+}
+
+// hiện lại trạng thái đã trả lời của một câu (dùng khi lùi về)
+function revealAnswer(key) {
+  const q = state.questions[state.index];
+  state.locked = true;
+  document.querySelectorAll(".option").forEach((el) => {
+    el.disabled = true;
+    if (el.dataset.key === q.answer) el.classList.add("is-correct");
+    else if (el.dataset.key === key) el.classList.add("is-wrong");
+  });
+  renderFeedback(key === q.answer, q);
+  syncNextLabel();
+}
+
+function renderFeedback(correct, q) {
+  const verdict = document.getElementById("feedback-verdict");
+  verdict.textContent = correct
+    ? "Chính xác!"
+    : `Chưa đúng, đáp án đúng là ${q.answer}`;
+  verdict.className = `feedback-verdict ${correct ? "ok" : "bad"}`;
+  document.getElementById("feedback-explain").textContent = q.explanation || "";
+  document.getElementById("feedback-source").textContent = q.source
+    ? `Văn kiện: ${q.source}`
+    : "";
+  document.getElementById("feedback").hidden = false;
+  animateFeedbackIn();
+}
+
+function syncNextLabel() {
+  const nextBtn = document.getElementById("btn-next");
+  const isLast = state.index >= state.questions.length - 1;
+  nextBtn.textContent = isLast ? "Xem kết quả →" : "Câu tiếp theo →";
+  if (window.syncGlassLabel) syncGlassLabel("btn-next");
 }
 
 function onPick(key, btn) {
@@ -314,6 +381,8 @@ function onPick(key, btn) {
 
   const q = state.questions[state.index];
   const correct = key === q.answer;
+  state.answers[state.index] = key;
+
   if (correct) {
     state.score += 1;
     if (state.teams.length) {
@@ -322,46 +391,28 @@ function onPick(key, btn) {
       team.streak += 1;
       team.bestStreak = Math.max(team.bestStreak, team.streak);
     }
-    // subtle gold-leaf: center card, restrained count
-    const card = document.querySelector(".question-card");
-    const rect = card ? card.getBoundingClientRect() : null;
-    const cx = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
-    const cy = rect ? rect.top + rect.height * 0.3 : window.innerHeight * 0.35;
-    confetti.burst(cx, cy, 36);
   } else {
     state.wrongIds.push(q.id);
     if (state.teams.length) state.teams[state.activeTeam].streak = 0;
   }
   renderTeamBoard();
 
-  for (const el of document.querySelectorAll(".option")) {
+  document.querySelectorAll(".option").forEach((el) => {
     el.disabled = true;
     if (el.dataset.key === q.answer) el.classList.add("is-correct");
     else if (el === btn) el.classList.add("is-wrong");
-  }
+  });
 
-  const verdict = document.getElementById("feedback-verdict");
-  verdict.textContent = correct
-    ? "Chính xác!"
-    : `Chưa đúng, đáp án đúng là ${q.answer}`;
-  verdict.className = `feedback-verdict ${correct ? "ok" : "bad"}`;
+  renderFeedback(correct, q);
+  syncNextLabel();
 
-  document.getElementById("feedback-explain").textContent = q.explanation || "";
-  document.getElementById("feedback-source").textContent = q.source
-    ? `Văn kiện: ${q.source}`
-    : "";
-  document.getElementById("feedback").hidden = false;
-  animateFeedbackIn();
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   requestAnimationFrame(() => {
     document.getElementById("feedback").scrollIntoView({
-      behavior: "smooth",
+      behavior: reduce ? "auto" : "smooth",
       block: "nearest",
     });
   });
-
-  const nextBtn = document.getElementById("btn-next");
-  const isLast = state.index >= state.questions.length - 1;
-  nextBtn.textContent = isLast ? "Xem kết quả →" : "Câu tiếp theo →";
 }
 
 function undoAnswer() {
@@ -373,6 +424,7 @@ function undoAnswer() {
   state.activeTeam = state.teams.length ? null : 0;
   state.locked = false;
   state.answerSnapshot = null;
+  delete state.answers[state.index];
 
   document.getElementById("feedback").hidden = true;
   document.querySelectorAll(".option").forEach((option) => {
@@ -440,7 +492,7 @@ function advance() {
       return;
     }
     state.index += 1;
-    renderQuestion();
+    renderQuestion(1);
   };
 
   if (typeof gsap === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -450,9 +502,33 @@ function advance() {
 
   state.animating = true;
   gsap.to(".question-card", {
-    y: -72,
+    x: -96,
     opacity: 0,
-    duration: 0.3,
+    duration: 0.32,
+    ease: "power2.in",
+    onComplete: go,
+  });
+}
+
+function goPrev() {
+  if (state.animating) return;
+  if (state.index <= 0) return;
+
+  const go = () => {
+    state.index -= 1;
+    renderQuestion(-1);
+  };
+
+  if (typeof gsap === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    go();
+    return;
+  }
+
+  state.animating = true;
+  gsap.to(".question-card", {
+    x: 96,
+    opacity: 0,
+    duration: 0.32,
     ease: "power2.in",
     onComplete: go,
   });
@@ -462,6 +538,8 @@ function nextQuestion() {
   advance();
 }
 
+const NUMBER_TO_KEY = { 1: "A", 2: "B", 3: "C", 4: "D" };
+
 function onKey(e) {
   if (e.repeat) return;
   const key = e.key.toUpperCase();
@@ -469,6 +547,28 @@ function onKey(e) {
   const startEl = document.getElementById("start");
   const quizEl = document.getElementById("quiz");
   const resultEl = document.getElementById("result");
+  const pickerEl = document.getElementById("picker");
+
+  // vòng quay đang mở: chỉ Esc để đóng, chặn hết phím tắt quiz
+  if (window.wheel && window.wheel.isOpen()) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      window.wheel.close();
+      return;
+    }
+    if ((e.key === "Enter" || e.key === " ") && e.target && e.target.tagName !== "BUTTON") {
+      e.preventDefault();
+      window.wheel.spin();
+      return;
+    }
+    return;
+  }
+
+  if (e.key === "Escape") {
+    if (pickerEl && !pickerEl.hidden) { e.preventDefault(); hidePicker(); return; }
+    if (resultEl && !resultEl.hidden) { e.preventDefault(); retry(); return; }
+    return;
+  }
 
   if (startEl && !startEl.hidden) {
     if (key === "ENTER" || key === " ") {
@@ -482,19 +582,37 @@ function onKey(e) {
   }
 
   if (quizEl && !quizEl.hidden) {
-    if (["A", "B", "C", "D"].includes(key)) {
-      const btn = document.querySelector(`.option[data-key="${key}"]`);
+    const tag = e.target && e.target.tagName;
+    const onControl = tag === "BUTTON" || tag === "A" || tag === "SELECT"
+      || tag === "INPUT" || tag === "TEXTAREA";
+
+    // 1-4 hoặc A-D
+    const byNumber = NUMBER_TO_KEY[e.key];
+    const pick = byNumber || (["A", "B", "C", "D"].includes(key) ? key : null);
+    if (pick) {
+      const btn = document.querySelector(`.option[data-key="${pick}"]`);
       if (btn && !btn.disabled) {
         e.preventDefault();
         btn.click();
       }
       return;
     }
+
+    if (e.key === "ArrowRight") { e.preventDefault(); advance(); return; }
+    if (e.key === "ArrowLeft") { e.preventDefault(); goPrev(); return; }
+
+    if (key === "ENTER" || key === " ") {
+      if (onControl) return; // để nút đang focus tự xử lý
+      e.preventDefault();
+      if (state.locked) advance();
+      return;
+    }
     return;
   }
 
   if (resultEl && !resultEl.hidden) {
-    if (key === "ENTER" && !e.target.closest("button, a, select, input")) {
+    if ((key === "ENTER" || key === " ")
+      && !e.target.closest("button, a, select, input")) {
       e.preventDefault();
       retry();
     }
@@ -509,7 +627,6 @@ function retry() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  spawnStars();
   loadPickerNames();
   document.addEventListener("keydown", onKey);
   document.getElementById("btn-toggle-picker").addEventListener("click", showPicker);
@@ -518,8 +635,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("picker-names").addEventListener("change", savePickerNames);
   document.getElementById("btn-start").addEventListener("click", startGame);
   document.getElementById("btn-next").addEventListener("click", nextQuestion);
+  document.getElementById("btn-prev").addEventListener("click", goPrev);
   document.getElementById("btn-undo").addEventListener("click", undoAnswer);
   document.getElementById("btn-retry").addEventListener("click", retry);
+  document.getElementById("btn-options").addEventListener("click", toggleOptions);
   document.getElementById("opt-mode").addEventListener("change", syncTeamSetup);
   syncTeamSetup();
   try {

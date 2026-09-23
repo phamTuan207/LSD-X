@@ -182,19 +182,6 @@ function importJson(file) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const layer = document.getElementById("stars-layer");
-  if (layer && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    for (let i = 0; i < 10; i += 1) {
-      const s = document.createElement("span");
-      s.className = "star";
-      s.textContent = "★";
-      s.style.left = `${Math.random() * 100}%`;
-      s.style.fontSize = `${8 + Math.random() * 10}px`;
-      s.style.animationDuration = `${10 + Math.random() * 12}s`;
-      s.style.animationDelay = `${Math.random() * 10}s`;
-      layer.appendChild(s);
-    }
-  }
   try {
     await seedIfEmpty();
     renderList();

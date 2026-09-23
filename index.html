@@ -12,7 +12,9 @@
 </head>
 <body>
   <div id="horizon-bg" class="horizon-bg" aria-hidden="true"></div>
-  <div class="stars-layer" aria-hidden="true" id="stars-layer"></div>
+  <div id="scene-stack" class="scene-stack" aria-hidden="true"></div>
+  <canvas id="scene-particles" class="scene-particles" aria-hidden="true"></canvas>
+  <div id="emblem" class="emblem" aria-hidden="true"></div>
   <canvas id="confetti" class="confetti-canvas" aria-hidden="true"></canvas>
 
   <header class="site-header">
@@ -35,34 +37,40 @@
           30 câu trắc nghiệm về Đại hội đại biểu toàn quốc lần thứ X của Đảng.
           Trả lời, xem lý giải, chấm điểm cuối trận.
         </p>
-        <label class="start-toggle">
-          <input type="checkbox" id="opt-shuffle">
-          <span>Xáo trộn thứ tự câu hỏi</span>
-        </label>
-        <label class="start-select" for="opt-section">
-          <span>Phần</span>
-          <select id="opt-section">
-            <option value="">Tất cả</option>
-          </select>
-        </label>
-        <label class="start-select" for="opt-mode">
-          <span>Chế độ</span>
-          <select id="opt-mode">
-            <option value="solo">Cả lớp</option>
-            <option value="2">2 đội</option>
-            <option value="3">3 đội</option>
-            <option value="4">4 đội</option>
-            <option value="5" selected>5 đội</option>
-            <option value="6">6 đội</option>
-          </select>
-        </label>
-        <div id="team-setup" class="team-setup" hidden></div>
         <button id="btn-start" type="button" class="btn-next btn-start">
-          Bắt đầu →
+          Bắt đầu
         </button>
-        <button id="btn-toggle-picker" type="button" class="btn-ghost picker-open">
-          Gọi tên ngẫu nhiên
-        </button>
+        <div class="start-secondary">
+          <button id="btn-options" type="button" class="btn-ghost"
+            aria-expanded="false" aria-controls="start-options">Tuỳ chọn</button>
+          <button id="btn-toggle-picker" type="button" class="btn-ghost">
+            Danh sách lớp
+          </button>
+        </div>
+        <div id="start-options" class="start-options" hidden>
+          <label class="start-toggle">
+            <input type="checkbox" id="opt-shuffle">
+            <span>Xáo trộn thứ tự câu hỏi</span>
+          </label>
+          <label class="start-select" for="opt-section">
+            <span>Phần</span>
+            <select id="opt-section">
+              <option value="">Tất cả</option>
+            </select>
+          </label>
+          <label class="start-select" for="opt-mode">
+            <span>Chế độ</span>
+            <select id="opt-mode">
+              <option value="solo">Cả lớp</option>
+              <option value="2">2 đội</option>
+              <option value="3">3 đội</option>
+              <option value="4">4 đội</option>
+              <option value="5" selected>5 đội</option>
+              <option value="6">6 đội</option>
+            </select>
+          </label>
+          <div id="team-setup" class="team-setup" hidden></div>
+        </div>
       </div>
     </section>
 
@@ -78,9 +86,15 @@
       <article class="question-card">
         <h2 id="question-text" class="question-text"></h2>
         <div id="options" class="options"></div>
-        <p class="kbd-hint" aria-hidden="true">
-          Phím tắt: <kbd>A</kbd>-<kbd>D</kbd> chọn · <kbd>Enter</kbd> tiếp
-        </p>
+        <div class="quiz-nav">
+          <div class="quiz-nav-actions">
+            <button id="btn-prev" type="button" class="btn-ghost btn-nav" hidden>← Câu trước</button>
+            <button id="btn-wheel" type="button" class="btn-ghost btn-nav">Vòng quay gọi tên</button>
+          </div>
+          <p class="kbd-hint" aria-hidden="true">
+            <kbd>1</kbd>-<kbd>4</kbd> chọn · <kbd>Enter</kbd> tiếp · <kbd>←</kbd><kbd>→</kbd> lùi/tới · <kbd>Esc</kbd> đóng
+          </p>
+        </div>
         <div id="feedback" class="feedback" aria-live="polite" hidden>
           <p id="feedback-verdict" class="feedback-verdict"></p>
           <p id="feedback-explain" class="feedback-explain"></p>
@@ -105,7 +119,7 @@
 
     <section id="picker" class="picker" hidden>
       <div class="picker-card">
-        <h2 class="card-title">Gọi tên ngẫu nhiên</h2>
+        <h2 class="card-title">Danh sách lớp</h2>
         <label class="picker-label" for="picker-names">Danh sách lớp, mỗi tên một dòng</label>
         <textarea id="picker-names" class="picker-input" rows="5"
           placeholder="Nguyễn Văn A&#10;Trần Thị B&#10;..."></textarea>
@@ -136,7 +150,10 @@
   <script src="js/vendor/liquid-glass/button.js"></script>
   <script src="js/confetti.js"></script>
   <script src="js/horizon-bg.js"></script>
+  <script src="js/scenes.js"></script>
+  <script src="js/emblem.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/wheel.js"></script>
   <script src="js/glass-ui.js"></script>
 </body>
 </html>

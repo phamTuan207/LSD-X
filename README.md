@@ -41,20 +41,22 @@ Mở trình duyệt vào **http://localhost:8000**
 ### Cách chơi (mode lớp học)
 
 - Giáo viên chiếu trang lên máy chiếu / màn hình chung.
-- Ở màn khởi động, chọn **Bắt đầu** (có thể tick *Xáo trộn* và chọn từ **2 đến 6 đội**).
-- Mỗi câu: giáo viên đọc câu hỏi, **rút tên** học sinh (nút *Gọi tên ngẫu nhiên*), bạn đó trả lời miệng.
+- Ở màn khởi động, chọn **Bắt đầu**. Cần *Xáo trộn*, chọn phần, hay chơi theo **2-6 đội** thì mở **Tuỳ chọn**.
+- Mỗi câu: giáo viên đọc câu hỏi, **quay tên** học sinh (nút *Vòng quay gọi tên* ở ngay trong màn câu hỏi), bạn đó trả lời miệng.
 - Người bấm máy chọn đáp án trên màn → hiện đúng/sai + lý giải + văn kiện. Giáo viên có thời gian giải thích, rồi bấm **Câu tiếp theo** để tiếp tục.
-- Nếu bấm nhầm đáp án hoặc chọn nhầm đội, bấm **Hoàn tác, chọn lại** trong phần lý giải rồi thực hiện lại câu đó.
-- Phím tắt: **A-D** chọn đáp án.
+- Bấm nhầm đáp án / chọn nhầm đội → **Hoàn tác, chọn lại** trong phần lý giải. Muốn xem lại câu trước → **← Câu trước**.
+- Phím tắt: **1-4** hoặc **A-D** chọn đáp án · **Enter**/**Space** tiếp · **←**/**→** lùi/tới · **Esc** đóng (vòng quay, màn kết quả).
+- Nền đổi theo mạch bài: 30 câu chia thành **10 cảnh** (Khởi nguyên → Mặt trận → Đại hội → Kháng chiến → Xây dựng → Sao vàng → Hoa sen → Phù hiệu → Đêm lên đèn → Bình minh), mỗi cảnh 3 câu, chuyển mượt bằng crossfade.
 - Khi chơi theo đội, giáo viên bấm vào đội giơ tay nhanh nhất trước khi người chơi trả lời; lựa chọn sẽ khóa sau khi nộp đáp án. Câu đúng cộng điểm và theo dõi chuỗi đúng.
 - Cuối trận: điểm tổng, bảng điểm đội, danh sách câu sai, nút chơi lại.
 
 ### Gọi tên học sinh
 
-- Nút **Gọi tên ngẫu nhiên** ở màn khởi động.
+- **Vòng quay gọi tên** (trong màn câu hỏi): vòng tròn 35 tên, quay nhanh rồi chậm dần, dừng đúng một tên. Bấm **Quay** hoặc **Enter**/**Space**; **Esc** để đóng.
+- Màn khởi động có nút **Danh sách lớp** để sửa danh sách và rút tên nhanh.
 - Danh sách 35 tên lớp KTPM67B đã có sẵn (file `data/names.json`).
-- Sửa / thêm / bấm tên ngay trong ô textarea, lưu trên trình duyệt (localStorage), không mất khi F5.
-- Tên đã gọi không lặp lại cho đến khi hết vòng.
+- Sửa / thêm tên ngay trong ô textarea, lưu trên trình duyệt (localStorage), không mất khi F5.
+- Tên đã gọi không lặp lại cho đến khi hết vòng (vòng quay và rút tên dùng chung một danh sách chờ).
 
 ### Thêm / sửa câu hỏi (không cần sửa code)
 
@@ -74,15 +76,18 @@ Mở trình duyệt vào **http://localhost:8000**
 
 ```
 LSD-X/
-├── index.html              # Trang game (quiz + gọi tên)
+├── index.html              # Trang game (quiz + vòng quay gọi tên)
 ├── admin.html              # CRUD câu hỏi (GUI)
-├── css/style.css           # Design system: đỏ–vàng lễ hội, Playfair + Be Vietnam Pro
+├── css/style.css           # Design system: glass surfaces, crimson×gold cho chữ
 ├── js/
-│   ├── app.js              # State quiz, render, keyboard, shuffle, scoring
+│   ├── app.js              # State quiz, render, keyboard, slide, shuffle, scoring
 │   ├── admin.js            # Form + list + import/export localStorage
-│   ├── confetti.js         # Gold-leaf particles (canvas, zero-dep)
+│   ├── scenes.js           # 10 cảnh nền (gradient layer + hạt theo cảnh)
+│   ├── emblem.js           # Khối 3D trung tâm: sao vàng / hoa sen, parallax
+│   ├── wheel.js            # Vòng quay gọi tên (canvas + GSAP)
+│   ├── confetti.js         # Gold-leaf particles, chỉ dùng cho màn thắng
 │   ├── glass-ui.js         # Mount Liquid Glass CTA (fallback nếu no WebGL)
-│   ├── horizon-bg.js       # ThreeUI Crimson Horizon (WebGL nền)
+│   ├── horizon-bg.js       # Nền WebGL, nhận palette theo cảnh (lerp)
 │   └── vendor/
 │       ├── gsap.min.js
 │       ├── html2canvas.min.js
@@ -111,14 +116,14 @@ LSD-X/
   "options": { "A": "...", "B": "...", "C": "...", "D": "..." },
   "answer": "C",
   "explanation": "Lý giải vì sao đúng.",
-  "source": "Bao cao Chinh tri."
+  "source": "Báo cáo Chính trị."
 }
 ```
 
 ### Thêm feature mới
 
 1. Tách nhỏ, xong 1 tính năng → commit → push.
-2. UI mới: giữ theme `css/style.css` (biến `--red`, `--gold`, font display/body).
+2. UI mới: giữ theme `css/style.css` (token semantic `--accent`, `--line`, `--glass-*`; font display/body), surface là kính trong suốt, đừng phủ vàng lên kính.
 3. Không đụng timer, mode lớp học, giáo viên tự điều khiển nhịp.
 4. Test nhanh: `node --check js/*.js` rồi mở browser F5.
 
@@ -126,12 +131,14 @@ LSD-X/
 
 | Thành phần | Vai trò |
 |---|---|
-| GSAP | Chuyển câu, stagger option, feedback |
-| liquid-glass-js (MIT) | CTA “Bắt đầu” / “Gọi tên” (WebGL trên nút chính) |
-| Canvas confetti | Lá vàng khi đúng câu / điểm ≥75% |
-| ThreeUI Crimson Horizon | Nền WebGL đỏ–vàng full-page, port shader EmeraldHorizon từ [MengTo/threeui](https://github.com/MengTo/threeui) (MIT), recolor ceremonial. File: `js/horizon-bg.js` |
-| ThreeUI Gradient Beam | Viền xoay quanh nút chính khi hover, port từ source `gradient-beam-cta` / `spinning-border-button` |
-| Dancing Script | Font viết tay uốn lượn (subset vi) làm điểm nhấn: tên rút thưởng, câu nhận xét, chữ *X* trong tiêu đề |
+| GSAP | Slide câu hỏi theo hướng, stagger option, parallax emblem, vòng quay |
+| Canvas 2D (`scenes.js`) | 10 cảnh nền: lớp gradient crossfade + hạt riêng từng cảnh (than hồng, cánh sen, đèn lồng, sao…) |
+| Emblem 3D (`emblem.js`) | Khối sao vàng / hoa sen nhiều lớp xếp theo trục Z trên `preserve-3d`; nghiêng theo con trỏ, trượt ngang khi đổi câu |
+| Vòng quay gọi tên (`wheel.js`) | 35 tên trên vòng tròn, quay nhanh rồi chậm dần (`power4.out`), dừng đúng một tên |
+| liquid-glass-js (MIT) | CTA chính dạng kính trong suốt (WebGL); dưới 640px tự rơi về kính CSS |
+| Canvas confetti | Chỉ dùng cho màn thắng (điểm ≥75%), không còn bắn mỗi câu đúng |
+| WebGL Horizon | Nền WebGL nhận palette từng cảnh và lerp mượt, port shader EmeraldHorizon từ [MengTo/threeui](https://github.com/MengTo/threeui) (MIT), recolor ceremonial. File: `js/horizon-bg.js` |
+| Dancing Script | Font viết tay uốn lượn (subset vi) làm điểm nhấn: tên vừa quay, câu nhận xét, chữ *X* trong tiêu đề |
 
 ---
 
@@ -143,11 +150,14 @@ Chủ đề: **Đại hội X** — KTPM67B.
 
 ### Cập nhật gần đây
 
-- Chế độ mặc định có 5 đội: **Nhóm 1, Nhóm 2, Nhóm 3, Nhóm 5, Nhóm 6**; Nhóm 4 được bỏ qua.
-- Giáo viên chọn đội giơ tay nhanh nhất trước mỗi câu; đáp án chỉ mở sau khi chọn đội.
-- Phần giải thích giữ nguyên cho đến khi giáo viên bấm **Câu tiếp theo**.
-- Sau khi chọn đáp án, trang tự đưa phần giải thích vào khung nhìn để giáo viên không phải cuộn tay.
-- Có **Hoàn tác, chọn lại** để sửa nhầm đáp án hoặc nhầm đội, khôi phục điểm và chuỗi.
-- Giao diện đã sửa lỗi nút CTA bị hiển thị trùng; Google Fonts được ghi rõ là dependency online.
+- **10 cảnh nền** cho 30 câu, mỗi cảnh 3 câu, chuyển bằng crossfade + khối 3D trung tâm trượt ngang theo hướng câu.
+- **Vòng quay gọi tên** ngay trong màn câu hỏi: quay nhanh → chậm dần → dừng đúng một tên, không lặp cho đến khi hết danh sách.
+- Chuyển câu kiểu slide ngang: **→** trượt từ phải, **← Câu trước** trượt từ trái; lùi về câu cũ hiện lại nguyên trạng thái đã trả lời, không cộng điểm lại.
+- Bàn phím: **1-4** hoặc **A-D** chọn đáp án, **Enter/Space** tiếp, **←/→** lùi/tới, **Esc** đóng.
+- Nền gameplay bỏ hiệu ứng "mưa sao vàng" nhạt nhoà; confetti để dành cho màn thắng.
+- Mặt kính trong suốt (trắng, không phủ vàng) cho card/CTA; crimson × gold chỉ còn ở chữ, tiến độ và điểm nhấn.
+- `prefers-reduced-motion`: cảnh đổi tức thì, không hạt, không parallax, vòng quay hiện kết quả ngay.
+- Sửa lỗi: tên đội mặc định trước đây là Nhóm 1, 2, 3, 5, 6, 6 (thiếu Nhóm 4) → nay đủ Nhóm 1-6.
+- Sửa lỗi hiệu năng: glass-ui không còn poll `requestAnimationFrame` vô hạn cho nút đang ẩn.
 
 pull request #1: add classroom team scoring, teacher-controlled pacing, and answer undo.

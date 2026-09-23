@@ -24,3 +24,6 @@ node_modules/
 # impeccable-ignore-end
 **/.opencode/skills/impeccable/scripts/bin/
 **/.commandcode/
+
+# python cache
+__pycache__/
