@@ -325,14 +325,12 @@ function renderQuestion(direction = 1) {
   document.getElementById("result").hidden = true;
   document.getElementById("quiz").hidden = false;
 
-  // câu đã trả lời rồi (khi lùi về) → hiện lại đúng trạng thái, không cộng điểm lại
+  // Câu đã trả lời rồi (khi lùi về) → hiện lại nguyên trạng thái, không cộng điểm lại.
+  // Vẫn phải chạy animateQuestionIn: chính nó trả card về opacity 1 sau khi
+  // tween "trượt ra" của advance()/goPrev() để lại opacity:0 + translate.
   const answered = state.answers[state.index];
-  if (answered) {
-    state.animating = false;
-    revealAnswer(answered);
-  } else {
-    animateQuestionIn(state.direction);
-  }
+  if (answered) revealAnswer(answered);
+  animateQuestionIn(state.direction);
 }
 
 // hiện lại trạng thái đã trả lời của một câu (dùng khi lùi về)
